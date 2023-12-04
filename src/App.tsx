@@ -1,13 +1,8 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PageRoutes from './components/page-components/pageRoutes';
 
 function App() {
-  return (
-    <div className="App">
-      Betahacks
-    </div>
-  );
+  return <PageRoutes/>;
 }
 
 export default App;
