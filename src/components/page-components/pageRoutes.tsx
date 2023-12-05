@@ -1,10 +1,11 @@
 import React,{lazy,Suspense} from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
-import BlogList from "../../pages/BlogList";
 import LoadingPage from "./LoadingPage";
 
 const LazyHomePage=lazy(()=>import('../../pages/HomePage'));
+const LazyBlogList=lazy(()=>import('../../pages/BlogList'));
+const LazyBlog=lazy(()=>import('../../pages/Blog'));
 
 const router = createBrowserRouter([
     {
@@ -17,11 +18,18 @@ const router = createBrowserRouter([
                     <LazyHomePage/>
                 </Suspense>
             )},
-            {path:'blogs',element:<BlogList/>},
-
+            {path:'v1/blogs',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                    <LazyBlogList />
+                </Suspense>
+            )},
+            {path:'v1/blogs/id',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazyBlog />
+            </Suspense>
+            )}
         ]
     },
-    {path:'spin',element:<LoadingPage/>}
 ]);
 
 const PageRoutes = () => {
