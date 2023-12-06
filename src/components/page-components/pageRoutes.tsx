@@ -6,6 +6,11 @@ import LoadingPage from "./LoadingPage";
 const LazyHomePage=lazy(()=>import('../../pages/HomePage'));
 const LazyBlogList=lazy(()=>import('../../pages/BlogList'));
 const LazyBlog=lazy(()=>import('../../pages/Blog'));
+const LazyProjects=lazy(()=>import('../../pages/Projects'));
+const LazyLoginPage=lazy(()=>import('../../pages/LoginPage'));
+const LazySignupPage=lazy(()=>import('../../pages/RegisterPage'));
+const LazyBlogAdder=lazy(()=>import('../../pages/BlogAdderPage'));
+const LazyProfile=lazy(()=>import('../../pages/Profile'));
 
 const router = createBrowserRouter([
     {
@@ -27,9 +32,40 @@ const router = createBrowserRouter([
                 <Suspense fallback={<LoadingPage/>}>
                 <LazyBlog />
             </Suspense>
-            )}
+            )},
+            {path:'v1/projects',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazyProjects />
+            </Suspense>
+            )},
+            {path:'v1/blog-adder',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazyBlogAdder />
+            </Suspense>
+            )},
+            {path:'v1/profile',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazyProfile />
+            </Suspense>
+            )},
         ]
     },
+    {
+        path:'/auth',
+        id:'auth',
+        children:[
+            {path:'v1/login',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazyLoginPage />
+            </Suspense>
+            )},
+            {path:'v1/register',element:(
+                <Suspense fallback={<LoadingPage/>}>
+                <LazySignupPage />
+            </Suspense>
+            )},
+        ]
+    }
 ]);
 
 const PageRoutes = () => {

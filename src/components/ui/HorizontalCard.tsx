@@ -10,7 +10,7 @@ const Horizontalprops = (props:BCardProps) => {
           <h3 className="font-semibold text-lg leading-tight truncate">{props.card.title}</h3>
           <p className="mt-2">{props.card.excerpt}</p>
           <p className="text-sm text-gray-700 uppercase tracking-wide font-semibold mt-2">
-            {props.card.author} &bull; {props.card.date}
+            {props.card.author ? props.card.author :props.card.projectHead} &nbsp;&nbsp; &bull; {props.card.date}
           </p>
           <a
             href="#read-more-link"

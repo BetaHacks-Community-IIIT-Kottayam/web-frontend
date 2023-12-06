@@ -2,8 +2,10 @@ export interface BHorizontalCard{
     img:string,
     title:string,
     excerpt:string,
-    author:string|any,
-    date:string|any,
+    author?:string,
+    projectHead?:string,
+    ongoing?:boolean,
+    date:string,
     forwardButton:string
 }
 
