@@ -11,7 +11,7 @@ const Profile = () => {
                             <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4">
                                 <div className="flex-none sm:flex">
                                     <div className="relative h-32 w-32 sm:mb-0 mb-3">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiXjldHhFIVdvZDCeoq6sSzSzxg95OvLCxQ&usqp=CAU" alt="profile Img" className="w-32 h-32 object-cover rounded-2xl" />
+                                        <img src="https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg" alt="profile Img" className="w-32 h-32 object-cover rounded-2xl" />
                                         <a href="#" className="absolute -right-2 bottom-2 -ml-3 text-white p-1 text-xs bg-green-400 hover:bg-green-500 font-medium tracking-wider rounded-full transition ease-in duration-300">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
                                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -90,18 +90,18 @@ const Profile = () => {
                                             <div className="flex flex-row items-center">
                                                 <div className="flex flex-col">
                                                     <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                           <h3 className="text-lg font-semibold text-gray-200 mb-2 ">How to Install ISO Kali Linux Image on VirtualBox: Complete Walkthrough</h3>
-                                                            <a href="#" className="text-blue-500 hover:underline ml-4">View</a>                              
+                                                        <h3 className="text-lg font-semibold text-gray-200 mb-2 ">How to Install ISO Kali Linux Image on VirtualBox: Complete Walkthrough</h3>
+                                                        <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
                                                     </div>
                                                     <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                           <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
-                                                            <a href="#" className="text-blue-500 hover:underline ml-4">View</a>                              
+                                                        <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
+                                                        <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
                                                     </div>
                                                     <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                           <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
-                                                            <a href="#" className="text-blue-500 hover:underline ml-4">View</a>                              
+                                                        <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
+                                                        <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>

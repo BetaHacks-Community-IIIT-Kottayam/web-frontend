@@ -1,6 +1,6 @@
 import backgroundImage from '../images/homeBack.jpg';
 import HorizontalCard from '../components/ui/HorizontalCard';
-import { BHorizontalCard } from '../redux/types/response.types';
+import { BHorizontalCard } from '../types/util.types';
 
 function HomePage() {
     const RecentBlogs:BHorizontalCard[] = [

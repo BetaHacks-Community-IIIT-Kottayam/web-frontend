@@ -6,7 +6,7 @@ const Input=(props: UInputProps) => {
       {props.label}
     </label>
     <div className="mt-2">
-      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset sm:max-w-md">
+      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-inset sm:max-w-md">
         <input
           type={props.type}
           name={props.name}
