@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BCardProps } from '../../redux/types/response.types';
+import { BCardProps } from '../../types/util.types';
 
 const Horizontalprops = (props:BCardProps) => {
   return <div className="flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl mt-4 w-100 mx-2 relative">

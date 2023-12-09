@@ -1,11 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from '../images/logo.jpeg';
 import { Link } from 'react-router-dom';
 import Input from '../components/ui/AuthInput';
 import AuthImage from '../components/ui/AuthImage';
 import LargeButton from '../components/ui/LargeButton';
+import { validateEmailInput, validateMobileInput, validateNameInput } from '../utils/InputValidators';
+import { useAppDispatch } from '../hooks/hooks';
+import { userRegister } from '../redux/features/auth/authService';
 
 const RegisterPage = () => {
+  const [name,setName]=useState('');
+  const [email,setEmail]=useState('');
+  const [mobile,setMobile]=useState('');
+  const [password,setPassword]=useState('');
+  const [cnfpassword,setCnfPassword]=useState('');
+  const dispatch=useAppDispatch();
+  const onNameChangeHandler = (event: any) => {
+    setName(event.target.value);
+  }
+  const onEmailChangeHandler = (event: any) => {
+    setEmail(event.target.value);
+  }
+  const onMobileChangeHandler = (event: any) => {
+    setMobile(event.target.value);
+  }
+  const onPasswordChangeHandler = (event: any) => {
+    setPassword(event.target.value);
+  }
+  const onCnfpasswordChangeHandler = (event: any) => {
+    setCnfPassword(event.target.value);
+  }
+  const onFormSubmit = () => {
+    if(!validateNameInput(name)){
+      return;
+    }
+    if(!validateEmailInput(email)){
+      return;
+    }
+    if(!validateMobileInput(mobile)){
+      return;
+    }
+    if(password.length<8){
+      return;
+    }
+    if(password!==cnfpassword){
+      return;
+    }
+    const newUserCredentials={
+      name,
+      email,
+      mobile,
+      password,
+      cnfpassword
+    }
+    dispatch(userRegister(newUserCredentials));
+  }
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
@@ -27,13 +76,27 @@ const RegisterPage = () => {
 
               {/* Email and Password Input */}
               <div className="mx-auto max-w-xs">
+                <div onChange={onNameChangeHandler}>
                 <Input type='name' placeholder='Name' />
-                <Input type='email' placeholder='Email' />
+                </div>
+                <div onChange={onEmailChangeHandler}>
+                  <Input type='email' placeholder='Email' />
+                </div>
+                <div onChange={onMobileChangeHandler}>
                 <Input type='tel' placeholder='Mobile No.' />
-                <Input type='password' placeholder='Password' />
+                </div>
+                <div onChange={onPasswordChangeHandler}>
+                  <Input type='password' placeholder='Password' />
+                </div>
+                <div onChange={onCnfpasswordChangeHandler}>
                 <Input type='password' placeholder='Confirm Password' />
+                </div>
+                <div>
+                </div>
                 {/* Sign Up Button */}
+                <div onClick={onFormSubmit}>
                 <LargeButton type='submit' name='Register' />
+                </div>
               </div>
 
               <p className="mt-2 text-center text-sm text-gray-600 max-w"> Already have an account? &nbsp;

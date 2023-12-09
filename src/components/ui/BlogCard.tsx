@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BCardProps, BHorizontalCard } from '../../redux/types/response.types';
+import { BCardProps, BHorizontalCard } from '../../types/util.types';
 import Button from './Button';
 
 const BlogCard = (props: BCardProps) => {

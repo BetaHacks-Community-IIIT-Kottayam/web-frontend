@@ -32,7 +32,7 @@ const BlogAdder = () => {
             </div>
         </div>
         <div className="mt-6 flex items-center justify-center gap-x-6 w-full">
-          <Button name='Cancel' type='button' bg='transparent' />
+          <Button name='Reset' type='reset' bg='gray' />
           <Button name='Submit' type='submit' />
         </div>
       </div>
