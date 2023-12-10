@@ -1,5 +1,5 @@
 import BlogCard from "../components/ui/BlogCard";
-import { BHorizontalCard } from "../types/util.types";
+import { BHorizontalCard } from "../types/props.types";
 const BlogList=()=> {
   const Blogs:BHorizontalCard[] = [
     {

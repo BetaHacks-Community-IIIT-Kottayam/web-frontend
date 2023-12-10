@@ -5,12 +5,18 @@ import Button from '../ui/Button';
 import { Link, useLocation } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import { useAppDispatch } from '../../hooks/hooks';
+import {  setLastLocation} from '../../redux/features/auth/authSlice';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 const Navbar = () => {
   const location = useLocation();
+  const dispatch=useAppDispatch();
+  const setLastLocationHandler=()=>{
+    dispatch(setLastLocation('/'))
+  }
   return (
     <header className="fixed top-0 w-full z-20">
       <nav className="bg-gray-700">
@@ -67,7 +73,7 @@ const Navbar = () => {
             </span>
             <input className="outline-none" type="text" placeholder="Search" />
           </div>
-          <Link to='/auth/v1/login'>
+          <Link to='/auth/v1/login' onClick={setLastLocationHandler} >
             <button className='bg-yellow-400 text-gray-800 py-2 px-4 rounded-full text-sm  hover:bg-yellow-500 focus:outline-none focus:ring focus:border-blue-300'>
                 Login/Register
           </button>

@@ -1,6 +1,6 @@
 import backgroundImage from '../images/homeBack.jpg';
 import HorizontalCard from '../components/ui/HorizontalCard';
-import { BHorizontalCard } from '../types/util.types';
+import { BHorizontalCard } from '../types/props.types';
 
 function HomePage() {
     const RecentBlogs:BHorizontalCard[] = [

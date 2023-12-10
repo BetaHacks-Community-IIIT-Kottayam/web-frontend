@@ -4,8 +4,9 @@ export interface IAuthSliceState{
     status:{
           isLoading:boolean,
           isError:boolean,
-          errorMessage:string|undefined
-    }
+          errorMessage:any
+    },
+    lastLocation:string
 }
 
 

@@ -1,4 +1,4 @@
-import { UImgProps } from '../../types/util.types';
+import { UImgProps } from '../../types/props.types';
 
 const BlogImage = (props:UImgProps) => {
     return (

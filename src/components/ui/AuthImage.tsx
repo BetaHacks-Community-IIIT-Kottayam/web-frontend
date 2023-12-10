@@ -1,4 +1,4 @@
-import { UImgProps } from '../../types/util.types';
+import { UImgProps } from '../../types/props.types';
 
 const AuthImage = (props:UImgProps) => {
     return (

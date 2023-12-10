@@ -1,4 +1,4 @@
-import { UInputProps } from '../../types/util.types';
+import { UInputProps } from '../../types/props.types';
 
 const Input=(props: UInputProps) => {
   return <div className="sm:col-span-4">

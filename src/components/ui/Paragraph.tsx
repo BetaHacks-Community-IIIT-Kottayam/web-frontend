@@ -1,4 +1,4 @@
-import { UTextProps } from '../../types/util.types';
+import { UTextProps } from '../../types/props.types';
 
 const Paragraph=(props:UTextProps)=> {
   return <p className="mb-6">

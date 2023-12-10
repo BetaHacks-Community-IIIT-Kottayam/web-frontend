@@ -1,5 +1,5 @@
 import React from 'react';
-import { UTextProps } from '../../types/util.types';
+import { UTextProps } from '../../types/props.types';
 
 const Note = (props:UTextProps) => {
     return (

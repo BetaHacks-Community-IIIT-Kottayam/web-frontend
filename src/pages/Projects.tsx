@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HorizontalCard from '../components/ui/HorizontalCard';
-import { BHorizontalCard } from '../types/util.types';
+import { BHorizontalCard } from '../types/props.types';
 
 
 const ProjectList = () => {

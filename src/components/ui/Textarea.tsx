@@ -1,5 +1,5 @@
 import React from 'react';
-import { UInputProps } from '../../types/util.types';
+import { UInputProps } from '../../types/props.types';
 
 const Textarea = (props:UInputProps) => {
     return <div className="col-span-full">
