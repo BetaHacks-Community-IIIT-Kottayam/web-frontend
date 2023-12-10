@@ -1,4 +1,4 @@
-import { UButtonProps } from '../../types/util.types';
+import { UButtonProps } from '../../types/props.types';
 
 const Button=(props:UButtonProps)=>{
   return (

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAuthSliceState } from "../../types/states.types";
-import { userLogin } from "./authService";
+import { userLogin, userRegister } from "./authService";
 import { RootState } from "../../store/store";
 
 
@@ -11,7 +11,8 @@ const initialState:IAuthSliceState={
         isLoading:false,
         isError:false,
         errorMessage:undefined
-    }
+    },
+    lastLocation:"/"
 }
 
 const authSlice=createSlice({
@@ -22,6 +23,13 @@ const authSlice=createSlice({
             state.isAuth=false;
             state.token=undefined;
             state.status.isLoading=false;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        },
+        setLastLocation:(state,action)=>{
+            state.lastLocation=action.payload;
+        },
+        userLoginRetry:(state)=>{
             state.status.isError=false;
             state.status.errorMessage=undefined;
         }
@@ -39,10 +47,31 @@ const authSlice=createSlice({
             state.token=token;
             state.status.isLoading=false;
         })
+        .addCase(userLogin.rejected,(state,action)=>{
+            state.status.isError=true
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false
+        })
+        .addCase(userRegister.pending,(state)=>{
+            state.status.isLoading=true;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(userRegister.fulfilled,(state,action)=>{
+            const {token}=action.payload;
+            state.isAuth=true;
+            state.token=token;
+            state.status.isLoading=false;
+        })
+        .addCase(userRegister.rejected,(state,action)=>{
+            state.status.isError=true
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false
+        })
     }
 
 });
 
-export const {userLogout}=authSlice.actions;
+export const {userLogout,setLastLocation,userLoginRetry}=authSlice.actions;
 export const selectAuth=(state:RootState)=>state.auth;
 export default authSlice.reducer;

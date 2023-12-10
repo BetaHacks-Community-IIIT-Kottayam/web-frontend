@@ -1,52 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../images/logo.jpeg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/ui/AuthInput';
 import AuthImage from '../components/ui/AuthImage';
+import ResponsePopup from '../components/ui/ResponsePopup';
 import LargeButton from '../components/ui/LargeButton';
 import { validateEmailInput, validateMobileInput, validateNameInput } from '../utils/InputValidators';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAuth } from '../hooks/hooks';
 import { userRegister } from '../redux/features/auth/authService';
+import Overlay from '../components/ui/Overlay';
+import { userLoginRetry } from '../redux/features/auth/authSlice';
 
 const RegisterPage = () => {
-  const [name,setName]=useState('');
-  const [email,setEmail]=useState('');
-  const [mobile,setMobile]=useState('');
-  const [password,setPassword]=useState('');
-  const [cnfpassword,setCnfPassword]=useState('');
-  const dispatch=useAppDispatch();
+  const { isAuth, status, lastLocation } = useAuth();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
+  const [cnfpassword, setCnfPassword] = useState('');
+  const [err, setErr] = useState('');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const onNameChangeHandler = (event: any) => {
     setName(event.target.value);
+    setErr('');
   }
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
+    setErr('');
   }
   const onMobileChangeHandler = (event: any) => {
     setMobile(event.target.value);
+    setErr('');
   }
   const onPasswordChangeHandler = (event: any) => {
     setPassword(event.target.value);
+    setErr('');
   }
   const onCnfpasswordChangeHandler = (event: any) => {
     setCnfPassword(event.target.value);
+    setErr('');
   }
   const onFormSubmit = () => {
-    if(!validateNameInput(name)){
+    if (!validateNameInput(name)) {
+      setErr('* Please enter valid name');
       return;
     }
-    if(!validateEmailInput(email)){
+    if (!validateEmailInput(email)) {
+      setErr('* Please enter valid email');
       return;
     }
-    if(!validateMobileInput(mobile)){
+    if (!validateMobileInput(mobile)) {
+      setErr('* Please enter valid mobile (10-digit)');
       return;
     }
-    if(password.length<8){
+    if (password.length < 8) {
+      setErr('* Please enter atleast 8 digits password');
       return;
     }
-    if(password!==cnfpassword){
+    if (password !== cnfpassword) {
+      setErr('* Password is not matching');
       return;
     }
-    const newUserCredentials={
+    const newUserCredentials = {
       name,
       email,
       mobile,
@@ -55,8 +72,21 @@ const RegisterPage = () => {
     }
     dispatch(userRegister(newUserCredentials));
   }
+  const registerErrorHandler = () => {
+    dispatch(userLoginRetry());
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      if (isAuth) {
+        navigate(lastLocation);
+      }
+    }, 1000);
+  }, [isAuth, status.isError])
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+      {status.isLoading && <Overlay message='Registering, please wait....' />}
+      {isAuth && <ResponsePopup type='success' />}
+      {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={registerErrorHandler} />}
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div>
@@ -77,25 +107,26 @@ const RegisterPage = () => {
               {/* Email and Password Input */}
               <div className="mx-auto max-w-xs">
                 <div onChange={onNameChangeHandler}>
-                <Input type='name' placeholder='Name' />
+                  <Input type='name' placeholder='Name' />
                 </div>
                 <div onChange={onEmailChangeHandler}>
                   <Input type='email' placeholder='Email' />
                 </div>
                 <div onChange={onMobileChangeHandler}>
-                <Input type='tel' placeholder='Mobile No.' />
+                  <Input type='tel' placeholder='Mobile No.' />
                 </div>
                 <div onChange={onPasswordChangeHandler}>
                   <Input type='password' placeholder='Password' />
                 </div>
                 <div onChange={onCnfpasswordChangeHandler}>
-                <Input type='password' placeholder='Confirm Password' />
+                  <Input type='password' placeholder='Confirm Password' />
                 </div>
                 <div>
                 </div>
+                {err && <p className='text-red-600 text-sm text-center'>{err}</p>}
                 {/* Sign Up Button */}
                 <div onClick={onFormSubmit}>
-                <LargeButton type='submit' name='Register' />
+                  <LargeButton type='submit' name='Register' />
                 </div>
               </div>
 

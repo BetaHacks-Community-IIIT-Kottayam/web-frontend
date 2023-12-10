@@ -29,6 +29,11 @@ export interface UInputProps{
     bg?:string,
     placeholder:string
 }
+export interface BResponsePopupProps{
+    type:string
+    onClose?:any
+    text?:any
+}
 export interface BHorizontalCard{
     img:string,
     title:string,

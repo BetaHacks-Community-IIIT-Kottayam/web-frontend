@@ -1,4 +1,4 @@
-import { UInputProps } from '../../types/util.types';
+import { UInputProps } from '../../types/props.types';
 
 const AuthInput=(props:UInputProps)=>{
   return  <input

@@ -1,4 +1,4 @@
-import { UOverlayProps } from "../../types/util.types";
+import { UOverlayProps } from "../../types/props.types";
 
 const Overlay = (props:UOverlayProps) => {
   return (

@@ -1,4 +1,4 @@
-import { UHeaderProps } from '../../types/util.types';
+import { UHeaderProps } from '../../types/props.types';
 import { FaUser } from "react-icons/fa";
 import { BiSolidUpvote } from "react-icons/bi";
 

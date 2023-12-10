@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../images/logo.jpeg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/ui/AuthInput';
 import AuthImage from '../components/ui/AuthImage';
 import LargeButton from '../components/ui/LargeButton';
@@ -8,14 +8,15 @@ import Overlay from '../components/ui/Overlay';
 import { validateEmailInput } from '../utils/InputValidators';
 import { userLogin } from '../redux/features/auth/authService';
 import { useAppDispatch, useAuth } from '../hooks/hooks';
+import ResponsePopup from '../components/ui/ResponsePopup';
+import { userLoginRetry } from '../redux/features/auth/authSlice';
 
 const LoginPage = () => {
-  const [overlay, setoverlay] = useState(false);
-  const {isAuth,status,token} =useAuth();
+  const {isAuth,status,lastLocation} =useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch=useAppDispatch();
-
+  const navigate=useNavigate();
 
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
@@ -35,10 +36,23 @@ const LoginPage = () => {
     }
     dispatch(userLogin(loginCredentials));
   }
+  const loginErrorHandler=()=>{
+    dispatch(userLoginRetry());
+  }
 
+  useEffect(() => {
+    setTimeout(() => {
+      if(isAuth){
+        navigate(lastLocation);
+      }
+    }, 1000);
+  }, [isAuth,status.isError])
+  
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-      {overlay && <Overlay message='Signing in, please wait....' />}
+      {status.isLoading && <Overlay message='Signing in, please wait....' />}
+      {isAuth && <ResponsePopup type='success' />}
+      {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={loginErrorHandler} />}
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div>
