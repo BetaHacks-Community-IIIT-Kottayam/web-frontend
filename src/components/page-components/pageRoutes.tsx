@@ -66,7 +66,7 @@ const router = createBrowserRouter([
                             <Suspense fallback={<LoadingPage />}>
                                 <LazyProfile />
                             </Suspense>
-                        )
+                        ),
                     }
                 ]
             },

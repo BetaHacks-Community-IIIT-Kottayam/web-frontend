@@ -1,6 +1,7 @@
 export interface UButtonProps{
     name:string,
-    type:string,
+    type?:string,
+    onClick?:any,
     bg?:string,
 }
 export interface UTextProps{
