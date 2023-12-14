@@ -17,7 +17,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
-  const [cnfpassword, setCnfPassword] = useState('');
+  const [cnfPassword, setCnfPassword] = useState('');
   const [err, setErr] = useState('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ const RegisterPage = () => {
       setErr('* Please enter atleast 8 digits password');
       return;
     }
-    if (password !== cnfpassword) {
+    if (password !== cnfPassword) {
       setErr('* Password is not matching');
       return;
     }
@@ -68,7 +68,7 @@ const RegisterPage = () => {
       email,
       mobile,
       password,
-      cnfpassword
+      cnfPassword,
     }
     dispatch(userRegister(newUserCredentials));
   }
