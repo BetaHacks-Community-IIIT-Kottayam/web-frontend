@@ -1,3 +1,5 @@
+import { IBlogCard } from "./response.types"
+
 export interface IAuthSliceState {
     isAuth: boolean,
     token: string | undefined,
@@ -19,6 +21,14 @@ export interface IBlogSliceState {
     status:Status,
     isAdded:boolean
 
+}
+
+export interface IContentSliceState {
+    blogs: IBlogCard[]|undefined,
+    currentBlog:IBlogCard|undefined,
+    status:Status,
+    isFetched:boolean,
+    isFetchedAll:boolean
 }
 
 

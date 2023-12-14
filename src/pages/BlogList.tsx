@@ -1,103 +1,28 @@
+import { useEffect } from "react";
 import BlogCard from "../components/ui/BlogCard";
-import { BHorizontalCard } from "../types/props.types";
+import { useAppDispatch, useContent } from "../hooks/hooks";
+import { getAllBlogsService } from "../redux/features/system/contentService";
+import Overlay from "../components/ui/Overlay";
+import ResponsePopup from "../components/ui/ResponsePopup";
+import { retryFetch } from "../redux/features/system/contentSlice";
 const BlogList=()=> {
-  const Blogs:BHorizontalCard[] = [
-    {
-      img: 'https://cdn.ttgtmedia.com/rms/onlineimages/what_is_a_blog_used_for-f_mobile.png',
-      title: 'Article 1',
-      excerpt: 'In TypeScript, if you have an object with certain properties (props) and you want to create a new object that contains only a subset of those properties, you can achieve this using the Pick utility type.',
-      date: '2023-12-04',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    {
-      img: 'https://images.squarespace-cdn.com/content/v1/5056c03584aedaeee9199a39/1512901729473-O70PDOI581WZL3DTM58B/how-blogging-works.jpg?format=1500w',
-      title: 'Article 2',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      date: '2023-12-05',
-      forwardButton:'Read More'
-    },
-    // Add more card data as needed
-  ];
-  return <div className="flex flex-wrap gap-4 mt-20 mb-4 justify-center items-center w-screen">
-  {Blogs.map((card, index) => (
-    <BlogCard key={index} card={card} />
+  const {blogs,isFetchedAll,status}=useContent();
+  const dispatch=useAppDispatch();
+  const retryHandler=()=>{
+         dispatch(retryFetch());
+  }
+  console.log(blogs);
+  useEffect(() => {
+      if(!isFetchedAll){
+         dispatch(getAllBlogsService());
+      }
+  }, [isFetchedAll,status.isError])
+
+  return <div className="flex flex-wrap gap-4 min-h-screen mt-20 mb-4 justify-center items-center w-screen">
+   {status.isLoading && <Overlay message="Fetching blogs, please wait...." />}
+   {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={retryHandler} />}
+  {blogs?.map((blog, index) => (
+    <BlogCard key={index} blog={blog} />
   ))}
 </div>;
 }

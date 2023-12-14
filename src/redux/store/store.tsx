@@ -2,6 +2,7 @@ import {configureStore,combineReducers, getDefaultMiddleware} from '@reduxjs/too
 import authReducer from '../features/auth/authSlice';
 import blogReducer from '../features/blog/blogSlice';
 import userReducer from '../features/user/userSlice';
+import contentReducer from '../features/system/contentSlice';
 import storage from 'redux-persist/lib/storage';
 import {PERSIST,persistReducer,persistStore, } from 'redux-persist';
 
@@ -17,7 +18,8 @@ const persistConfigblog={
 const rootReducer=combineReducers({
     auth:persistReducer(persistConfig,authReducer),
     blog:persistReducer(persistConfigblog,blogReducer),
-    user:userReducer
+    user:userReducer,
+    content:contentReducer
 })
 
 export const store=configureStore({

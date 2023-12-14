@@ -1,3 +1,5 @@
+import { IBlogCard } from "../redux/types/response.types"
+
 export interface UButtonProps{
     name:string,
     type?:string,
@@ -46,7 +48,11 @@ export interface BHorizontalCard{
     forwardButton:string
 }
 
-export interface BCardProps{
+export interface BProjectProps{
     key:number,
     card:BHorizontalCard
+}
+export interface BCardProps{
+    key:number,
+    blog:IBlogCard
 }

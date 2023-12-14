@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { BCardProps } from '../../types/props.types';
+import { BProjectProps } from '../../types/props.types';
 
-const Horizontalprops = (props:BCardProps) => {
+const Horizontalprops = (props:BProjectProps) => {
   return <div className="flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl mt-4 w-100 mx-2 relative">
         <div className="h-64 w-auto md:w-1/2">
           <img className="inset-0 h-fullprops w-full object-cover object-center" src={props.card.img} alt={props.card.title} />
