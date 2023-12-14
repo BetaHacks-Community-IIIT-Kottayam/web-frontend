@@ -37,7 +37,7 @@ const router = createBrowserRouter([
                 )
             },
             {
-                path: 'v1/blogs/id', element: (
+                path: 'v1/blogs/:id', element: (
                     <Suspense fallback={<LoadingPage />}>
                         <LazyBlog />
                     </Suspense>
@@ -51,13 +51,6 @@ const router = createBrowserRouter([
                 )
             },
             {
-                path: 'v1/blog-adder', element: (
-                    <Suspense fallback={<LoadingPage />}>
-                        <LazyBlogAdder />
-                    </Suspense>
-                )
-            },
-            {
                 path: 'v1/user',
                 element: <ProtectedRoutes />,
                 children: [
@@ -67,7 +60,14 @@ const router = createBrowserRouter([
                                 <LazyProfile />
                             </Suspense>
                         ),
-                    }
+                    },
+                    {
+                        path: 'blog-adder', element: (
+                            <Suspense fallback={<LoadingPage />}>
+                                <LazyBlogAdder />
+                            </Suspense>
+                        )
+                    },
                 ]
             },
             {

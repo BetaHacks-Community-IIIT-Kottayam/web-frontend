@@ -6,6 +6,16 @@ export interface IAuthenticationResponse{
 export interface IAddBlogServiceResponse{
      message:string,
 }
+export interface IBlogCard{
+     name: string,
+     para:string,
+     img:string,
+     blogId:string
+}
+export interface IBlogCardResponse{
+     blogs:IBlogCard[],
+     message:string
+}
 
 interface UserProfile{
     name:string|undefined,
