@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { BProjectProps } from '../../types/props.types';
 
 const Horizontalprops = (props:BProjectProps) => {
@@ -7,17 +6,17 @@ const Horizontalprops = (props:BProjectProps) => {
           <img className="inset-0 h-fullprops w-full object-cover object-center" src={props.card.img} alt={props.card.title} />
         </div>
         <div className="w-full py-4 px-6 text-gray-800 flex flex-col justify-between">
-          <h3 className="font-semibold text-lg leading-tight truncate">{props.card.title}</h3>
-          <p className="mt-2">{props.card.excerpt}</p>
+          <h3 className="font-semibold text-lg leading-tight truncate">{props.card.name}</h3>
+          <p className="mt-2">{props.card.para}</p>
           <p className="text-sm text-gray-700 uppercase tracking-wide font-semibold mt-2">
-            {props.card.author ? props.card.author :props.card.projectHead} &nbsp;&nbsp; &bull; {props.card.date}
+            {props.card.author ? props.card.author :props.card.projectHead} &nbsp;&nbsp; &bull; {props.card.createdOn?.slice(0,10)}
           </p>
           <a
-            href="#read-more-link"
+            href={`v1/blogs/${props.card.blogId}`}
             className="text-blue-500 mt-2 flex items-center space-x-1 px-2 py-2"
             style={{ position: 'absolute', bottom: '8px', right: '8px' }}
           >
-            {props.card.forwardButton}
+            Read More
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"

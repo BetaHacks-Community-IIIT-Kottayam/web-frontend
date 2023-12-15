@@ -38,14 +38,18 @@ export interface BResponsePopupProps{
     text?:any
 }
 export interface BHorizontalCard{
-    img:string,
-    title:string,
-    excerpt:string,
+    img?:string,
+    title?:string,
+    excerpt?:string,
     author?:string,
     projectHead?:string,
     ongoing?:boolean,
-    date:string,
-    forwardButton:string
+    date?:string,
+    name?: string,
+    para?:string,
+    blogId?:string,
+    createdOn?:string
+    forwardButton?:string
 }
 
 export interface BProjectProps{

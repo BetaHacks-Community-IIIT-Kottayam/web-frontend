@@ -8,6 +8,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { useAppDispatch, useAuth } from '../../hooks/hooks';
 import {  setLastLocation, userLogout} from '../../redux/features/auth/authSlice';
 import { flushBlog } from '../../redux/features/blog/blogSlice';
+import { flushUser } from '../../redux/features/user/userSlice';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -20,6 +21,7 @@ const Navbar = () => {
   }
   const logoutHandler=()=>{
     dispatch(flushBlog());
+    dispatch(flushUser());
     dispatch(userLogout());
   }
   const {isAuth}=useAuth();

@@ -6,9 +6,9 @@ import { RootState } from "../../store/store";
 
 const initialState:IUserSliceState={
     userInfo:{
-        name:undefined,
+    name:undefined,
     email:undefined,
-    blogs:[],
+    activity:[],
     imgUrl:'',
     upvotes:0,
     city:'',
@@ -29,7 +29,10 @@ const userSlice=createSlice({
     name:'user',
     initialState,
     reducers:{
-
+        flushUser:(state)=>{
+            state.status=initialState.status;
+            state.userInfo=initialState.userInfo;
+        }
     },
     extraReducers:(builder)=>{
         builder
@@ -53,7 +56,7 @@ const userSlice=createSlice({
     }
 });
 
-
+export const {flushUser}=userSlice.actions;
 export const selectUser=(state:RootState)=>state.user;
 export default userSlice.reducer;
 

@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import { useAppDispatch, useProfile } from "../hooks/hooks";
 import { getUserProfile } from "../redux/features/user/userService";
 import Overlay from "../components/ui/Overlay";
+import { Link } from "react-router-dom";
+import { newFetch } from "../redux/features/system/contentSlice";
 
 const Profile = () => {
     const { userInfo, status } = useProfile();
     const dispatch = useAppDispatch();
+  const newFetchHandler=()=>{
+    dispatch(newFetch());
+  }
     useEffect(() => {
         if (!userInfo.email) {
             dispatch(getUserProfile());
@@ -104,27 +109,17 @@ const Profile = () => {
                                                 <div className="flex items-center justify-between sm:mt-2">
                                                     <div className="flex flex-row items-center">
                                                         <div className="flex flex-col">
-                                                            <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2 ">How to Install ISO Kali Linux Image on VirtualBox: Complete Walkthrough</h3>
-                                                                <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
+                                                            {userInfo.activity ? 
+                                                              userInfo.activity.map((blog)=>(
+                                                                <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
+                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2 ">{blog.name}</h3>
+                                                                <Link onClick={newFetchHandler} to={`/v1/blogs/${blog.blogId}`} className="text-blue-500 hover:underline ml-4">View</Link>
                                                             </div>
-                                                            <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2 ">How to Install ISO Kali Linux Image on VirtualBox: Complete Walkthrough</h3>
-                                                                <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
-                                                            </div>
-                                                            <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2 ">How to Install ISO Kali Linux Image on VirtualBox: Complete Walkthrough</h3>
-                                                                <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
-                                                            </div>
-                                                            <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
-                                                                <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
-                                                            </div>
-                                                            <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2">How to Become a SOC Analyst: in 2023</h3>
-                                                                <a href="#" className="text-blue-500 hover:underline ml-4">View</a>
-                                                            </div>
-
+                                                              ))
+                                                            :
+                                                                <div className="bg-gray-800 text-white border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
+                                                                    No activity yet
+                                                                </div>}
                                                         </div>
                                                     </div>
                                                 </div>

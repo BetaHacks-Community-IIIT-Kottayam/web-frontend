@@ -1,4 +1,4 @@
-import { IBlogCard } from "./response.types"
+import { IBlogCard, IGetBlog } from "./response.types"
 
 export interface IAuthSliceState {
     isAuth: boolean,
@@ -25,9 +25,11 @@ export interface IBlogSliceState {
 
 export interface IContentSliceState {
     blogs: IBlogCard[]|undefined,
-    currentBlog:IBlogCard|undefined,
+    recentBlogs: IBlogCard[]|undefined,
+    currentBlog:IGetBlog|undefined,
     status:Status,
     isFetched:boolean,
+    isFetchedRecent:boolean,
     isFetchedAll:boolean
 }
 
@@ -53,17 +55,21 @@ export interface IUserSliceState {
     userInfo: {
         name: string | undefined,
         email: string | undefined,
-        blogs: string[],
-        imgUrl: string,
-        upvotes: number,
-        city: string,
-        country: string,
-        college: string,
-        position: string,
-        totalblogs: number,
-        months: number
+        country?: string,
+    upvotes:number,
+    imgUrl:string,
+    totalblogs:number,
+    activity:IActivity[],
+    months:number,
+    city?:string,
+    college?:string,
+    position?:string,
     },
     status:Status
+}
+export interface IActivity{
+    blogId:string,
+    name:string
 }
 interface Status{
     isLoading: boolean,
