@@ -11,12 +11,11 @@ const BlogList=()=> {
   const retryHandler=()=>{
          dispatch(retryFetch());
   }
-  console.log(blogs);
   useEffect(() => {
       if(!isFetchedAll){
          dispatch(getAllBlogsService());
       }
-  }, [isFetchedAll,status.isError])
+  }, [isFetchedAll,status.isError]);
 
   return <div className="flex flex-wrap gap-4 min-h-screen mt-20 mb-4 justify-center items-center w-screen">
    {status.isLoading && <Overlay message="Fetching blogs, please wait...." />}

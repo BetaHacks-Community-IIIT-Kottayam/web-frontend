@@ -24,6 +24,7 @@ export const getUserProfile = createAsyncThunk<
                 'http://localhost:5000/user/getUserProfile',
                 config,
             );
+            console.log(response.data);
             return response.data as IGetUserProfileResponse;
            
         } catch (err) {

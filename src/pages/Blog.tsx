@@ -3,44 +3,40 @@ import Paragraph from "../components/ui/Paragraph";
 import SubHeading from "../components/ui/SubHeading";
 import BlogImage from "../components/ui/BlogImage";
 import BlogHeader from "../components/ui/BlogHeader";
+import { useAppDispatch, useContent } from "../hooks/hooks";
+import { useEffect } from "react";
+import { getBlogService } from "../redux/features/system/contentService";
+import { useParams } from "react-router-dom";
+import Overlay from "../components/ui/Overlay";
+import ResponsePopup from "../components/ui/ResponsePopup";
+import Code from "../components/ui/Code";
 const Blog = () => {
+    const { currentBlog, status, isFetched } = useContent();
+    const dispatch = useAppDispatch();
+    const { id } = useParams();
+    useEffect(() => {
+        if (!isFetched) {
+            dispatch(getBlogService(id ? id : ''));
+        }
+    }, [isFetched, status.isError]);
     return (
-        <div className="container my-24 mx-auto md:px-6">
-            <section className="mb-32">
-                <BlogHeader title="An intriguing title for an interesting article"
-                    author="Abhinav Yadav" upvotes={213} />
-                <Paragraph content="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio
-          sapiente molestias consectetur. Fuga nulla officia error placeat
-          veniam, officiis rerum laboriosam ullam molestiae magni velit laborum
-          itaque minima doloribus eligendi! Lorem ipsum, dolor sit amet
-          consectetur adipisicing elit. Optio sapiente molestias consectetur.
-          Fuga nulla officia error placeat veniam, officiis rerum laboriosam
-          ullam molestiae magni velit laborum itaque minima doloribus eligendi!" />
+        <div className="container min-h-screen mt-32 mx-auto">
+            {status.isLoading && <Overlay message="Fetching blog, please wait...." />}
+            {status.isError && <ResponsePopup type="error" text={status.errorMessage} />}
+            <section className="px-4">
+                {currentBlog?.index.map((i, index) => (
+                    <div>
+                        {i === 0 && <BlogHeader title={currentBlog.name}
+                            author={currentBlog.author} upvotes={currentBlog.upvotes} />}
+                        {i === 1 && <SubHeading content={currentBlog.content[index]} />}
+                        {i === 2 && <Paragraph content={currentBlog.content[index]} />}
+                        {i === 3 && <Note content={currentBlog.content[index]} />}
+                        {i === 4 && <BlogImage url={currentBlog.content[index]} alt="Loading image.." />}
+                        {i === 5 && <a href={currentBlog.content[index]} target="_blank" className="text-blue-500 hover:underline" ><p className="mb-6">{currentBlog.content[index]}</p></a>}
+                        {i === 6 && <Code content={currentBlog.content[index]} />}
 
-                <SubHeading content="Optio sapiente molestias consectetur?" />
-
-
-                <Paragraph content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-          architecto ex ab aut tempora officia libero praesentium, sint id
-          magnam eius natus unde blanditiis. Autem adipisci totam sit
-          consequuntur eligendi." />
-
-                <Note content="Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Optio odit consequatur porro sequi ab distinctio
-          modi. Rerum cum dolores sint, adipisci ad veritatis laborum eaque
-          illum saepe mollitia ut voluptatum." />
-
-
-                <Paragraph content=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
-          libero repellat molestiae aperiam laborum aliquid atque magni nostrum,
-          inventore perspiciatis possimus quia incidunt maiores molestias eaque
-          nam commodi! Magnam, labore." />
-
-                <BlogImage url="https://mdbcdn.b-cdn.net/img/new/slides/194.jpg" alt="Loading image.." />
-                <Paragraph content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed,
-          temporibus nulla voluptatibus accusantium sapiente doloremque.
-          Doloribus ratione laboriosam culpa. Ab officiis quidem, debitis
-          nostrum in accusantium dolore veritatis eius est?" />
+                    </div>
+                ))}
             </section>
         </div>
     );
