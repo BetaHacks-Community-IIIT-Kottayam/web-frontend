@@ -24,7 +24,7 @@ function HomePage() {
     const { recentBlogs, status, isFetchedRecent } = useContent();
     const dispatch = useAppDispatch();
     useEffect(() => {
-        if (!isFetchedRecent) {
+        if (!isFetchedRecent && !status.isError) {
             dispatch(getRecentBlogsService());
         }
     }, [isFetchedRecent, status.isError]);
@@ -41,6 +41,7 @@ function HomePage() {
             <div className="container mx-auto p-8 bg-gray-200">
                 <h2 className="text-4xl font-bold mb-4">Recent Blogs</h2>
                 {!isFetchedRecent && status.isLoading && <LoadingPage />}
+                {status.isError && <div className='text-red-500'>Error while loading recent blogs</div>}
                 {recentBlogs?.map((card, index) => (
                     <HorizontalCard key={index} card={card} />
                 ))}
