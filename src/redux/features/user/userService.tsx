@@ -13,23 +13,23 @@ export const getUserProfile = createAsyncThunk<
         dispatch: AppDispatch,
         rejectVal: IErrorResponse
     }
->('getUserProfile',async(_,thunkAPI)=>{
-          const config={
-            headers:{
-                Authorization:`Bearer ${thunkAPI.getState().auth.token}`
-            }
-          }
-        try{
-            const response=await axios.get(
-                'http://localhost:5000/user/getUserProfile',
-                config,
-            );
-            console.log(response.data);
-            return response.data as IGetUserProfileResponse;
-           
-        } catch (err) {
+>('getUserProfile', async (_, thunkAPI) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${thunkAPI.getState().auth.token}`
+        }
+    }
+    try {
+        const baseUrl = process.env.REACT_APP_API_URL;
+        const response = await axios.get(
+            `${baseUrl}/user/getUserProfile`,
+            config,
+        );
+        return response.data as IGetUserProfileResponse;
+
+    } catch (err) {
         const error = err as AxiosError<IErrorResponse>;
-        
+
         return thunkAPI.rejectWithValue(
             error.response?.data as IErrorResponse
         );

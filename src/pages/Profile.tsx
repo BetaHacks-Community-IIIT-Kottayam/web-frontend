@@ -4,22 +4,33 @@ import { getUserProfile } from "../redux/features/user/userService";
 import Overlay from "../components/ui/Overlay";
 import { Link } from "react-router-dom";
 import { newFetch } from "../redux/features/system/contentSlice";
+import Button from "../components/ui/Button";
+import ResponsePopup from "../components/ui/ResponsePopup";
+import { flushBlog } from "../redux/features/blog/blogSlice";
+import { flushUser } from "../redux/features/user/userSlice";
+import { userLogout } from "../redux/features/auth/authSlice";
 
 const Profile = () => {
     const { userInfo, status } = useProfile();
     const dispatch = useAppDispatch();
-  const newFetchHandler=()=>{
-    dispatch(newFetch());
-  }
+    const newFetchHandler = () => {
+        dispatch(newFetch());
+    }
+    const logoutHandler=()=>{
+        dispatch(flushBlog());
+        dispatch(flushUser());
+        dispatch(userLogout());
+      }
     useEffect(() => {
-        if (!userInfo.email) {
+        if (!userInfo.email && !status.isError) {
             dispatch(getUserProfile());
         }
     });
 
     return (
         <div>
-            {status.isError ?
+            {status.isError && <ResponsePopup type="error" onClose={logoutHandler} text='Error loading profile' />}
+            {status.isLoading ?
                 <Overlay message="Loading profile, please wait...." />
                 : <>
                     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
@@ -90,7 +101,7 @@ const Profile = () => {
                                     <div className="col-span-12 sm:col-span-4">
                                         <div className="p-4 relative bg-gray-800 border border-gray-800 shadow-lg rounded-2xl">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 absolute bottom-4 right-3 text-yellow-300" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                <path d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                             </svg>
                                             <div className="flex justify-between items-center ">
                                                 <i className="fab fa-codepen text-xl text-gray-400"></i>
@@ -103,20 +114,25 @@ const Profile = () => {
                                 {/* Activity */}
                                 <div className="flex flex-col">
                                     <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4">
-                                        <h3 className="text-2xl font-semibold text-gray-200 mb-2">Activity</h3>
+                                        <div className="flex justify-between px-8">
+                                            <h3 className="text-2xl font-semibold text-gray-200 mb-2">Activity</h3>
+                                            <Link to='/v1/user/blog-adder'>
+                                                <Button type='button' name='+Add blog' />
+                                            </Link>
+                                        </div>
                                         <div className="flex-none sm:flex mt-4">
                                             <div className="flex-auto sm:ml-5 justify-between">
                                                 <div className="flex items-center justify-between sm:mt-2">
                                                     <div className="flex flex-row items-center">
                                                         <div className="flex flex-col">
-                                                            {userInfo.activity ? 
-                                                              userInfo.activity.map((blog)=>(
-                                                                <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
-                                                                <h3 className="text-lg font-semibold text-gray-200 mb-2 ">{blog.name}</h3>
-                                                                <Link onClick={newFetchHandler} to={`/v1/blogs/${blog.blogId}`} className="text-blue-500 hover:underline ml-4">View</Link>
-                                                            </div>
-                                                              ))
-                                                            :
+                                                            {userInfo.activity ?
+                                                                userInfo.activity.map((blog) => (
+                                                                    <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
+                                                                        <h3 className="text-lg font-semibold text-gray-200 mb-2 ">{blog.name}</h3>
+                                                                        <Link onClick={newFetchHandler} to={`/v1/blogs/${blog.blogId}`} className="text-blue-500 hover:underline ml-4">View</Link>
+                                                                    </div>
+                                                                ))
+                                                                :
                                                                 <div className="bg-gray-800 text-white border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
                                                                     No activity yet
                                                                 </div>}

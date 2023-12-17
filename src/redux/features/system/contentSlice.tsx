@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IContentSliceState } from "../../types/states.types";
 import { RootState } from "../../store/store";
-import { getAllBlogsService, getBlogService, getRecentBlogsService } from "./contentService";
+import { getAllBlogsService, getBlogService, getRecentBlogsService, upvoteBlogService } from "./contentService";
 
 
 const initialState: IContentSliceState = {
@@ -78,6 +78,23 @@ const contentSlice = createSlice({
                 state.status.errorMessage = undefined;
             })
             .addCase(getBlogService.rejected, (state, action) => {
+                state.status.isError = true;
+                state.status.errorMessage = action.payload;
+                state.status.isLoading = false;
+            })
+            .addCase(upvoteBlogService.pending, (state) => {
+                state.status.isLoading = true;
+                state.status.isError = false;
+                state.status.errorMessage = undefined;
+            })
+            .addCase(upvoteBlogService.fulfilled, (state, action) => {
+                state.isFetched = true;
+                state.currentBlog = action.payload.blog;
+                state.status.isLoading = false;
+                state.status.isError = false;
+                state.status.errorMessage = undefined;
+            })
+            .addCase(upvoteBlogService.rejected, (state, action) => {
                 state.status.isError = true;
                 state.status.errorMessage = action.payload;
                 state.status.isLoading = false;

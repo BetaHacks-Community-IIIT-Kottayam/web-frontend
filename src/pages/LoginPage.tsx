@@ -6,17 +6,17 @@ import AuthImage from '../components/ui/AuthImage';
 import LargeButton from '../components/ui/LargeButton';
 import Overlay from '../components/ui/Overlay';
 import { validateEmailInput } from '../utils/InputValidators';
-import { userLogin } from '../redux/features/auth/authService';
+import { userLogin, verifyTokenService } from '../redux/features/auth/authService';
 import { useAppDispatch, useAuth } from '../hooks/hooks';
 import ResponsePopup from '../components/ui/ResponsePopup';
 import { userLoginRetry } from '../redux/features/auth/authSlice';
 
 const LoginPage = () => {
-  const {isAuth,status,lastLocation} =useAuth();
+  const { isAuth, token, status, lastLocation } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch=useAppDispatch();
-  const navigate=useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
@@ -26,28 +26,28 @@ const LoginPage = () => {
   }
   const onFormSubmit = () => {
     const isEmailValid = validateEmailInput(email);
-    const isPasswordValid=password.length>=8;
-    if(!isEmailValid || !isPasswordValid){
+    const isPasswordValid = password.length >= 8;
+    if (!isEmailValid || !isPasswordValid) {
       return;
     }
-    const loginCredentials={
+    const loginCredentials = {
       email,
       password
     }
     dispatch(userLogin(loginCredentials));
   }
-  const loginErrorHandler=()=>{
+  const loginErrorHandler = () => {
     dispatch(userLoginRetry());
   }
 
   useEffect(() => {
     setTimeout(() => {
-      if(isAuth){
+      if (isAuth) {
         navigate(lastLocation);
       }
     }, 1000);
-  }, [isAuth,status.isError])
-  
+  }, [isAuth, status.isError])
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       {status.isLoading && <Overlay message='Signing in, please wait....' />}
@@ -100,7 +100,7 @@ const LoginPage = () => {
               {/* Email Sign Up */}
               <div className="my-10 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                  Or sign ip with e-mail
+                  Or sign in with e-mail
                 </div>
               </div>
 
@@ -117,7 +117,7 @@ const LoginPage = () => {
 
                 {/* Sign Ip Button */}
                 <div onClick={onFormSubmit}>
-                  <LargeButton type='submit' name='Sing In' />
+                  <LargeButton type='submit' name='Sign In' />
                 </div>
 
               </div>

@@ -28,7 +28,7 @@ const Footer = () => {
           © 2023 Copyright:
           <a
             className="text-white"
-            href="https://tailwind-elements.com/"
+            href=""
           >  Betahacks@IIITKottayam
           </a>
         </div>
