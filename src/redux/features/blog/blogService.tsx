@@ -22,8 +22,9 @@ export const addNewBlogService = createAsyncThunk<
         }
       }
     try{
+        const baseUrl=process.env.REACT_APP_API_URL;
         const response = await axios.post(
-            'http://localhost:5000/user/addBlog',
+            `${baseUrl}/user/addBlog`,
             newBlog,
             config
         );

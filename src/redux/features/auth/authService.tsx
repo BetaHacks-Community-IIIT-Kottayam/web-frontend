@@ -17,8 +17,11 @@ export const userLogin = createAsyncThunk<
     }
 >('userLogin', async (loginCredentials: ILoginFormState, thunkAPI) => {
     try {
+        const baseUrl=process.env.REACT_APP_API_URL;
+        // console.log(baseUrl);
+        // console.log(process.env.NODE_ENV);
         const response = await axios.post(
-            'http://localhost:5000/user/signin',
+            `${baseUrl}/user/signin`,
             loginCredentials
         );
         return response.data as IAuthenticationResponse;
@@ -43,13 +46,48 @@ export const userRegister = createAsyncThunk<
     }
 >('userRegister', async (newUserCredentials: IRegisterFormState, thunkAPI) => {
     try {
+        const baseUrl=process.env.REACT_APP_API_URL;
         const response = await axios.post(
-            'http://localhost:5000/user/signup',
+            `${baseUrl}/user/signup`,
             newUserCredentials
         );
-        console.log(response.data);
         return response.data as IAuthenticationResponse;
     } catch (err) {
+        const error = err as AxiosError<IErrorResponse>;
+
+        return thunkAPI.rejectWithValue(
+            error.response?.data as IErrorResponse
+        );
+    }
+});
+
+//verify Token-Service 
+export const verifyTokenService = createAsyncThunk<
+    IAuthenticationResponse,
+    undefined,
+    {
+        state: RootState;
+        dispatch: AppDispatch,
+        rejectVal: IErrorResponse
+    }
+>('verifyTokenService', async (_, thunkAPI) => {
+    const config={
+        headers:{
+            Authorization:`Bearer ${thunkAPI.getState().auth.token}`
+        }
+      }
+    try {
+        const baseUrl=process.env.REACT_APP_API_URL;
+
+        const response = await axios.get(
+            `${baseUrl}/user/verifyToken`,
+            config
+        );
+
+        return response.data as IAuthenticationResponse;
+    } catch (err) {
+        console.log(err)
+
         const error = err as AxiosError<IErrorResponse>;
 
         return thunkAPI.rejectWithValue(

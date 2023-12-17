@@ -26,7 +26,7 @@ const Blog = () => {
             <section className="px-4">
                 {currentBlog?.index.map((i, index) => (
                     <div>
-                        {i === 0 && <BlogHeader title={currentBlog.name}
+                        {i === 0 && <BlogHeader title={currentBlog.name} id={id}
                             author={currentBlog.author} upvotes={currentBlog.upvotes} />}
                         {i === 1 && <SubHeading content={currentBlog.content[index]} />}
                         {i === 2 && <Paragraph content={currentBlog.content[index]} />}

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAuthSliceState } from "../../types/states.types";
-import { userLogin, userRegister } from "./authService";
+import { userLogin, userRegister, verifyTokenService } from "./authService";
 import { RootState } from "../../store/store";
 
 
@@ -67,6 +67,24 @@ const authSlice=createSlice({
             state.status.isError=true
             state.status.errorMessage=action.payload;
             state.status.isLoading=false
+        })
+        .addCase(verifyTokenService.pending,(state)=>{
+            state.status.isLoading=true;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(verifyTokenService.fulfilled,(state,action)=>{
+            const {token}=action.payload;
+            state.isAuth=true;
+            state.token=token;
+            state.status.isLoading=false;
+        })
+        .addCase(verifyTokenService.rejected,(state,action)=>{
+            state.isAuth=false;
+            state.status.isError=true;
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false;
+            state.token=undefined;
         })
     }
 

@@ -20,6 +20,7 @@ export interface UImgProps{
 export interface UHeaderProps{
     title:string,
     author:string,
+    id?:string,
     upvotes:number
 }
 export interface UInputProps{
