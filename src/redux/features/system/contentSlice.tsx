@@ -25,6 +25,9 @@ const contentSlice = createSlice({
         retryFetch:(state)=>{
              state=initialState
         },
+        resetStatus:(state)=>{
+             state.status=initialState.status;
+        },
         newFetch:(state)=>{
              state.isFetched=false;
         }
@@ -104,6 +107,6 @@ const contentSlice = createSlice({
 
 });
 
-export const {retryFetch,newFetch}=contentSlice.actions;
+export const {retryFetch,resetStatus,newFetch}=contentSlice.actions;
 export const selectContent = (state: RootState) => state.content;
 export default contentSlice.reducer;
