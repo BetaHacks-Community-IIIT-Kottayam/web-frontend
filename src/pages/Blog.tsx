@@ -6,14 +6,22 @@ import BlogHeader from "../components/ui/BlogHeader";
 import { useAppDispatch, useContent } from "../hooks/hooks";
 import { useEffect } from "react";
 import { getBlogService } from "../redux/features/system/contentService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Overlay from "../components/ui/Overlay";
 import ResponsePopup from "../components/ui/ResponsePopup";
 import Code from "../components/ui/Code";
+import { resetStatus } from "../redux/features/system/contentSlice";
 const Blog = () => {
     const { currentBlog, status, isFetched } = useContent();
     const dispatch = useAppDispatch();
     const { id } = useParams();
+    const navigate=useNavigate();
+    const errorPopHandler=()=>{
+        if(status.errorMessage.message==='Unauthorized'){
+            dispatch(resetStatus());
+            navigate('/auth/v1/login');
+        }
+    }
     useEffect(() => {
         if (!isFetched) {
             dispatch(getBlogService(id ? id : ''));
@@ -22,7 +30,7 @@ const Blog = () => {
     return (
         <div className="container min-h-screen mt-32 mx-auto">
             {status.isLoading && <Overlay message="Fetching blog, please wait...." />}
-            {status.isError && <ResponsePopup type="error" text={status.errorMessage} />}
+            {status.isError && <ResponsePopup type="error" text={status.errorMessage} onClose={errorPopHandler} />}
             <section className="px-4">
                 {currentBlog?.index.map((i, index) => (
                     <div>
