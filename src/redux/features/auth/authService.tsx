@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IAuthenticationResponse, IErrorResponse } from "../../types/response.types";
-import { ILoginFormState, IRegisterFormState } from "../../types/states.types";
+import { IAuthenticationResponse, IErrorResponse, ISendOtpResponse, IVerifyOtpOtpResponse } from "../../types/response.types";
+import { ILoginFormState, IRegisterFormState, IVerifyOtpState } from "../../types/states.types";
 import { AppDispatch, RootState } from "../../store/store";
 import axios, { AxiosError } from "axios";
 
@@ -52,6 +52,58 @@ export const userRegister = createAsyncThunk<
             newUserCredentials
         );
         return response.data as IAuthenticationResponse;
+    } catch (err) {
+        const error = err as AxiosError<IErrorResponse>;
+
+        return thunkAPI.rejectWithValue(
+            error.response?.data as IErrorResponse
+        );
+    }
+});
+
+//Send otp service 
+export const sendOtpService = createAsyncThunk<
+    ISendOtpResponse,
+    string,
+    {
+        state: RootState;
+        dispatch: AppDispatch,
+        rejectVal: IErrorResponse
+    }
+>('sendOtpService', async (email: string, thunkAPI) => {
+    try {
+        const baseUrl=process.env.REACT_APP_API_URL;
+        const response = await axios.post(
+            `${baseUrl}/user/sendOtp`,
+              {email}
+        );
+        return response.data as ISendOtpResponse;
+    } catch (err) {
+        const error = err as AxiosError<IErrorResponse>;
+
+        return thunkAPI.rejectWithValue(
+            error.response?.data as IErrorResponse
+        );
+    }
+});
+
+//Verify otp service 
+export const verifyOtpService = createAsyncThunk<
+    IVerifyOtpOtpResponse,
+    IVerifyOtpState,
+    {
+        state: RootState;
+        dispatch: AppDispatch,
+        rejectVal: IErrorResponse
+    }
+>('verifyOtpService', async (verifyOtpCredentials: IVerifyOtpState, thunkAPI) => {
+    try {
+        const baseUrl=process.env.REACT_APP_API_URL;
+        const response = await axios.post(
+            `${baseUrl}/user/verifyOtp`,
+              verifyOtpCredentials
+        );
+        return response.data as IVerifyOtpOtpResponse;
     } catch (err) {
         const error = err as AxiosError<IErrorResponse>;
 

@@ -37,6 +37,12 @@ export interface IGetUserProfileResponse {
      message: string,
      userProfile: UserProfile
 }
+export interface ISendOtpResponse {
+     message: string,
+}
+export interface IVerifyOtpOtpResponse {
+     message: string,
+}
 
 export interface IGetBlog {
      name: string,

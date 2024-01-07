@@ -43,6 +43,11 @@ export interface IAddBlogState {
     content: string[]
 }
 
+export interface IVerifyOtpState {
+    email: string,
+    otp:string
+}
+
 export interface IRegisterFormState {
     email: string,
     password: string,
@@ -74,5 +79,7 @@ export interface IActivity{
 interface Status{
     isLoading: boolean,
     isError: boolean,
+    isEmailVerified?:boolean,
+    isOtpSent?:boolean,
     errorMessage: any
 }
