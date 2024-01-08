@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAuthSliceState } from "../../types/states.types";
-import { userLogin, userRegister, verifyTokenService } from "./authService";
+import { sendOtpService, userLogin, userRegister, verifyOtpService, verifyTokenService } from "./authService";
 import { RootState } from "../../store/store";
 
 
@@ -10,6 +10,8 @@ const initialState:IAuthSliceState={
     status:{
         isLoading:false,
         isError:false,
+        isEmailVerified:false,
+        isOtpSent:false,
         errorMessage:undefined
     },
     lastLocation:"/"
@@ -24,6 +26,8 @@ const authSlice=createSlice({
             state.token=undefined;
             state.status.isLoading=false;
             state.status.isError=false;
+            state.status.isOtpSent=false;
+            state.status.isEmailVerified=false;
             state.status.errorMessage=undefined;
         },
         setLastLocation:(state,action)=>{
@@ -85,6 +89,34 @@ const authSlice=createSlice({
             state.status.errorMessage=action.payload;
             state.status.isLoading=false;
             state.token=undefined;
+        })
+        .addCase(sendOtpService.pending,(state)=>{
+            state.status.isLoading=true;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(sendOtpService.fulfilled,(state)=>{
+            state.status.isLoading=false;
+            state.status.isOtpSent=true;
+        })
+        .addCase(sendOtpService.rejected,(state,action)=>{
+            state.status.isError=true;
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false;
+        })
+        .addCase(verifyOtpService.pending,(state)=>{
+            state.status.isLoading=true;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(verifyOtpService.fulfilled,(state,action)=>{
+            state.status.isLoading=false;
+            state.status.isEmailVerified=true;
+        })
+        .addCase(verifyOtpService.rejected,(state,action)=>{
+            state.status.isError=true;
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false;
         })
     }
 

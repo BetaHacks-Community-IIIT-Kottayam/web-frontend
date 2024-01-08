@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Logo from '../images/logo.jpeg';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/ui/AuthInput';
@@ -7,18 +7,22 @@ import ResponsePopup from '../components/ui/ResponsePopup';
 import LargeButton from '../components/ui/LargeButton';
 import { validateEmailInput, validateMobileInput, validateNameInput } from '../utils/InputValidators';
 import { useAppDispatch, useAuth } from '../hooks/hooks';
-import { userRegister } from '../redux/features/auth/authService';
+import { sendOtpService, userRegister, verifyOtpService } from '../redux/features/auth/authService';
 import Overlay from '../components/ui/Overlay';
 import { userLoginRetry } from '../redux/features/auth/authSlice';
+import ModalOverlay from '../components/ui/ModalOverlay';
 
 const RegisterPage = () => {
   const { isAuth, status, lastLocation } = useAuth();
   const [name, setName] = useState('');
+  const [otp, setOtp] = useState('');
+  const otpRef = useRef(null);
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [cnfPassword, setCnfPassword] = useState('');
   const [err, setErr] = useState('');
+  const [verifyEmail, setVerifyEmail] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,6 +32,10 @@ const RegisterPage = () => {
   }
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
+    setErr('');
+  }
+  const onOtpChangeHandler = (event: any) => {
+    setOtp(event.target.value);
     setErr('');
   }
   const onMobileChangeHandler = (event: any) => {
@@ -41,6 +49,20 @@ const RegisterPage = () => {
   const onCnfpasswordChangeHandler = (event: any) => {
     setCnfPassword(event.target.value);
     setErr('');
+  }
+  const onRequestOtp = () => {
+    if (!validateEmailInput(email)) {
+      setErr('* Please enter valid email');
+      return;
+    }
+    dispatch(sendOtpService(email));
+  }
+  const onVerifyOtp = () => {
+    if (otp.length !== 6) {
+      setErr('* Please enter 6 digit otp');
+      return;
+    }
+    dispatch(verifyOtpService({ email, otp }));
   }
   const onFormSubmit = () => {
     if (!validateNameInput(name)) {
@@ -63,6 +85,10 @@ const RegisterPage = () => {
       setErr('* Password is not matching');
       return;
     }
+    if (!status.isEmailVerified) {
+      setVerifyEmail(true);
+      return;
+    }
     const newUserCredentials = {
       name,
       email,
@@ -77,16 +103,94 @@ const RegisterPage = () => {
   }
   useEffect(() => {
     setTimeout(() => {
+      if (status.isEmailVerified) {
+        setVerifyEmail(false);
+      }
       if (isAuth) {
         navigate(lastLocation);
       }
     }, 1000);
-  }, [isAuth, status.isError])
+  }, [isAuth, status.isError,status.isEmailVerified])
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       {status.isLoading && <Overlay message='Registering, please wait....' />}
       {isAuth && <ResponsePopup type='success' />}
+      {status.isEmailVerified && verifyEmail && <ResponsePopup type='success' />}
       {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={registerErrorHandler} />}
+      {verifyEmail && !status.isEmailVerified && <ModalOverlay>
+        <div className='bg-white flex flex-col px-16 py-8 text-center justfiy-center rounded-md'>
+          <p className='font-semibold mb-4'>Verify Your Email</p>
+          {!status.isOtpSent ? <input
+            placeholder='Email'
+            type='text'
+            value={email}
+            onChange={onEmailChangeHandler}
+            className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
+
+          /> :
+            <input
+              placeholder='otp'
+              type='text'
+              value={otp}
+              onChange={onOtpChangeHandler}
+              className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
+
+            />
+          }
+          {(err || status.errorMessage) && <p className='text-red-600 text-sm text-center'>{err || status.errorMessage}</p>}
+
+          {!status.isOtpSent ?
+            <div>
+              {!status.isLoading ?
+                <div onClick={onRequestOtp}>
+                  <LargeButton type='submit' name='Request OTP' />
+                </div>
+                :
+                <button
+                  type="button"
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    className="mr-2 animate-spin"
+                    viewBox="0 0 1792 1792"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z"></path>
+                  </svg>
+                  Sending otp....
+                </button>}
+            </div>
+            :
+            <div>
+              {!status.isLoading ?
+                <div onClick={onVerifyOtp}>
+                  <LargeButton type='submit' name='Verify OTP' />
+                </div>
+                :
+                <button
+                  type="button"
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    className="mr-2 animate-spin"
+                    viewBox="0 0 1792 1792"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z"></path>
+                  </svg>
+                  Verifying otp....
+                </button>}
+            </div>
+          }
+        </div>
+
+      </ModalOverlay>}
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div>
