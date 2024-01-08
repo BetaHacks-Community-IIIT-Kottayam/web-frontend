@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { BProjectProps } from '../../types/props.types';
 
 const Horizontalprops = (props:BProjectProps) => {
@@ -11,8 +12,8 @@ const Horizontalprops = (props:BProjectProps) => {
           <p className="text-sm text-gray-700 uppercase tracking-wide font-semibold mt-2">
             {props.card.author ? props.card.author :props.card.projectHead} &nbsp;&nbsp; &bull; {props.card.createdOn?.slice(0,10)}
           </p>
-          <a
-            href={`v1/blogs/${props.card.blogId}`}
+          <Link
+            to={`v1/blogs/${props.card.blogId}`}
             className="text-blue-500 mt-2 flex items-center space-x-1 px-2 py-2"
             style={{ position: 'absolute', bottom: '8px', right: '8px' }}
           >
@@ -31,7 +32,7 @@ const Horizontalprops = (props:BProjectProps) => {
                 d="M19 9l-7 7-7-7"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
 };
