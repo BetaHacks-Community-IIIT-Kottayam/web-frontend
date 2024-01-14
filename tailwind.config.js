@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily:{
+        'global': ['Ubuntu', 'sans-serif'],
+      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
