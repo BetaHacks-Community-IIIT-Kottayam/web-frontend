@@ -8,7 +8,7 @@ const Footer = () => {
             <a target="_blank" href="https://www.linkedin.com/company/betalabs-iiitkottayam/mycompany/" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaLinkedin size='2rem' color="white"/>
             </a>
-            <a className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" href="https://chat.whatsapp.com/GmHkvedR1Q8BKDHTikVH1P" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaWhatsapp size='2rem' color="white"/>
             </a>
             <a target="_blank" href="https://github.com/BetaHacks-Community-IIIT-Kottayam" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
@@ -18,7 +18,7 @@ const Footer = () => {
             <a onClick={(e) => {window.location.href ='mailto:betahackscommunity@gmail.com';}} className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <HiOutlineMail size='2rem' color="white"/>
             </a>
-            <a className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" href="https://t.me/betahackscommunity" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaTelegram size='2rem' color="white"/>
             </a>
           </div>

@@ -4,7 +4,7 @@ import Navbar from "../navbar/Navbar";
 import Footer from "./Footer";
 
 const Layout=()=>{
-    return <div>
+    return <div className="font-global">
         <Navbar/>
         <Outlet/>
         <Footer/>
