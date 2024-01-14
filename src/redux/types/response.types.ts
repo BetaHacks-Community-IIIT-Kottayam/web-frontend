@@ -7,6 +7,9 @@ export interface IAuthenticationResponse {
 export interface IAddBlogServiceResponse {
      message: string,
 }
+export interface IUploadImgBlogServiceResponse {
+     imageUrl: string,
+}
 export interface IBlogCard {
      name: string,
      para: string,
@@ -60,5 +63,6 @@ export interface IGetBlogResponse {
 
 export interface IErrorResponse {
      statusCode: number,
-     errMessage: string
+     errMessage: string,
+     message?:string
 }

@@ -1,10 +1,12 @@
 import React from 'react';
 import { UInputProps } from '../../types/props.types';
+import { MdDelete } from 'react-icons/md';
 
 const Textarea = (props:UInputProps) => {
     return <div className="col-span-full">
         <label htmlFor={props.id} className="block text-sm font-medium leading-6 text-gray-900">
             {props.label}
+    {props.label!=='Title' && <MdDelete size='1rem' onClick={props.onDelete} className='inline ml-4 cursor-pointer' />}  
         </label>
         <div className="mt-2">
             <textarea

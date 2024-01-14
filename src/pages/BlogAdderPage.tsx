@@ -1,16 +1,17 @@
 import Note from '../components/ui/Note';
 import Input from '../components/ui/Input';
 import Textarea from '../components/ui/Textarea';
+import { MdDelete } from "react-icons/md";
 import Button from '../components/ui/Button';
 import Image from '../components/ui/Image';
 import { useAppDispatch, useBlog } from '../hooks/hooks';
-import { addContent, addIndex, editContent, flushBlog, retrySubmit } from '../redux/features/blog/blogSlice';
+import { addContent, addIndex, editContent, flushBlog, removeElement, retrySubmit } from '../redux/features/blog/blogSlice';
 import { addNewBlogService } from '../redux/features/blog/blogService';
 import Overlay from '../components/ui/Overlay';
 import ResponsePopup from '../components/ui/ResponsePopup';
 import { useEffect, useState } from 'react';
 const BlogAdder = () => {
-  const { index, content, status,isAdded } = useBlog();
+  const { index, content,images, status,isAdded } = useBlog();
   const dispatch = useAppDispatch();
   const [errors,setErrors]=useState([false]);
   const changeHandler = (event: any, i: any) => {
@@ -46,9 +47,22 @@ const BlogAdder = () => {
   const retrySubmitHandler=()=>{
     dispatch(retrySubmit());
   }
+  const removeElementHandler = (i: number) => {
+    dispatch(removeElement(i));
+  }
   const submitBlogHandler = (event:any) => {
     event.preventDefault();
-    const arr=content.map(data=>(data===''));
+    let j=0;
+    const finalContent=content.map(data=>data);
+    for(let i=0;i<index.length;i++){
+      if(index[i]===4){
+        console.log(images[j]);
+        finalContent[i]=images[j];
+        j++;
+      }
+    }
+    console.log(finalContent);
+    const arr=finalContent.map(data=>(data===''));
     let isInputEmpty=false;
     for(const i of arr){
       if(i){
@@ -62,7 +76,7 @@ const BlogAdder = () => {
     }
     const blog = {
       index,
-      content
+      content:finalContent
     }
     dispatch(addNewBlogService(blog));
   }
@@ -88,19 +102,19 @@ const BlogAdder = () => {
           <Note content=' Your blog will be displayed in the sequence of tags selected in the form below.' />
           {index.map((i, index) => (
             <div onChange={(e) => { changeHandler(e, index) }} className="mt-10 grid grid-cols-1 gap-x-6 ">
-              {i === 0 && <Input type='text' id='title' placeholder='Blog Title' name='title' label='Title' />}
-              {i === 1 && <Input type='text' id='heading' placeholder='Enter new heading' name='heading' label='Heading' />}
-              {i === 2 && <Textarea type='text'
+              {i === 0 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='title' placeholder='Blog Title' name='title' label='Title' />}
+              {i === 1 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='heading' placeholder='Enter new heading' name='heading' label='Heading' />}
+              {i === 2 && <Textarea onDelete={()=>{removeElementHandler(index)}} type='text'
                 placeholder='Enter paragraph content here'
                 label='Excerpt'
                 rows={8}
                 id='para'
                 name='para'
               />}
-              {i === 3 && <Input type='text' id='note' placeholder='Enter note' name='note' label='Note' />}
-              {/* {i === 4 && <Image/>} */}
-              {i === 5 && <Input type='text' id='link' placeholder='Enter new link' name='link' label='Link' />}
-              {i === 6 && <Textarea type='text'
+              {i === 3 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='note' placeholder='Enter note' name='note' label='Note' />}
+              {i === 4 && <Image onDelete={()=>{removeElementHandler(index)}} />}
+              {i === 5 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='link' placeholder='Enter new link' name='link' label='Link' />}
+              {i === 6 && <Textarea onDelete={()=>{removeElementHandler(index)}} type='text'
                 placeholder='Enter code here'
                 label='Code'
                 rows={8}
@@ -115,7 +129,7 @@ const BlogAdder = () => {
             <span onClick={AddHeading} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Heading</span>
             <span onClick={AddParagraph} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Paragraph</span>
             <span onClick={AddNote} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Note</span>
-            {/* <span onClick={AddImage} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Image</span> */}
+            <span onClick={AddImage} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Image</span>
             <span onClick={AddLink} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Link</span>
             <span onClick={AddCode} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Code</span>
           </div>

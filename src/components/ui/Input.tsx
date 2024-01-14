@@ -1,10 +1,12 @@
+import { MdDelete } from 'react-icons/md';
 import { UInputProps } from '../../types/props.types';
 
 const Input=(props: UInputProps) => {
   return <div className="sm:col-span-4">
     <label htmlFor={props.id} className="block text-sm font-medium leading-6 text-gray-900">
       {props.label}
-    </label>
+    {props.label!=='Title' && <MdDelete size='1rem' onClick={props.onDelete} className='inline ml-12 cursor-pointer' />}  
+      </label>
     <div className="mt-2">
       <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-inset sm:max-w-md">
         <input

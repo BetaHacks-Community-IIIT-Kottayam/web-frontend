@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HorizontalCard from '../components/ui/HorizontalCard';
 import { BHorizontalCard } from '../types/props.types';
 import Logo from '../images/logo.jpeg';
+import PageUnderDevelopement from '../components/ui/PageUnderDevelopement';
 
 
 
@@ -61,10 +62,8 @@ const ProjectList = () => {
   // );
 
   return (
-    <div className='min-h-screen flex flex-col justify-center items-center w-32 h-32 mx-auto rounded-full'>
-      <img src={Logo} />
-      <p>Launching soon....</p>
-    </div>
+      <PageUnderDevelopement type='study' />
+
   )
 };
 
