@@ -31,7 +31,12 @@ export interface UInputProps{
     rows?:number,
     cols?:number,
     bg?:string,
+    onDelete?:any,
     placeholder:string
+}
+
+export interface UInputImgProps{
+    onDelete?:any,
 }
 export interface BResponsePopupProps{
     type:string

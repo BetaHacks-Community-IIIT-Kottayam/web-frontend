@@ -103,11 +103,12 @@ const RegisterPage = () => {
   }
   useEffect(() => {
     setTimeout(() => {
-      if (status.isEmailVerified) {
-        setVerifyEmail(false);
-      }
       if (isAuth) {
         navigate(lastLocation);
+      }
+      if (status.isEmailVerified) {
+        setVerifyEmail(false);
+        onFormSubmit();
       }
     }, 1000);
   }, [isAuth, status.isError,status.isEmailVerified])
@@ -129,7 +130,7 @@ const RegisterPage = () => {
 
           /> :
             <input
-              placeholder='otp'
+              placeholder='Enter OTP'
               type='text'
               value={otp}
               onChange={onOtpChangeHandler}

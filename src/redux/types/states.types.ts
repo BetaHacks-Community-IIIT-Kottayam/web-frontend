@@ -18,6 +18,7 @@ export interface IAuthSliceState {
 export interface IBlogSliceState {
     index: number[],
     content:string[],
+    images:string[],
     status:Status,
     isAdded:boolean
 
@@ -41,6 +42,9 @@ export interface ILoginFormState {
 export interface IAddBlogState {
     index: number[],
     content: string[]
+}
+export interface IUploadImgState {
+    formData: FormData
 }
 
 export interface IVerifyOtpState {
