@@ -67,18 +67,19 @@ const blogSlice = createSlice({
                 state.status.isLoading = false;
             })
             .addCase(uploadImgBlogService.pending, (state) => {
-                // state.status.isLoading = true;
-                // state.status.isError = false;
-                // state.status.errorMessage = undefined;
+                state.status.isLoading = true;
+                state.status.isError = false;
+                state.status.errorMessage = undefined;
             })
             .addCase(uploadImgBlogService.fulfilled, (state,action) => {
                 state.images.push(action.payload.imageUrl);
+                state.status.isLoading = false;
             })
             .addCase(uploadImgBlogService.rejected, (state, action) => {
                 state.status.isError = true;
                 state.status.errorMessage = action.payload;
                 state.images.push('No image found');
-                // state.status.isLoading = false;
+                state.status.isLoading = false;
             })
 
     }
