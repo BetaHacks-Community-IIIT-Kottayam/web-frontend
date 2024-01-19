@@ -68,9 +68,9 @@ const LoginPage = () => {
             <h1 className="text-2xl xl:text-3xl font-extrabold">
               Sign In
             </h1>
-            <div className="w-full flex-1 mt-8">
-              <div className="flex flex-col items-center">
-                {/* Google Sign Up Button */}
+            <div className="w-full flex-1">
+              {/* <div className="flex flex-col items-center">
+                // Google Sign Up Button 
                 <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-2 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                   <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -95,12 +95,12 @@ const LoginPage = () => {
                   <span className="ml-4">Sign In with Google</span>
                 </button>
 
-              </div>
+              </div> */}
 
               {/* Email Sign Up */}
               <div className="my-10 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                  Or sign in with e-mail
+                  Sign in with e-mail
                 </div>
               </div>
 
