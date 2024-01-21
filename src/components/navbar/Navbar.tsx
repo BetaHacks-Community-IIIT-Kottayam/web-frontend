@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 import { Link, useLocation } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import { useAppDispatch, useAuth } from '../../hooks/hooks';
+import { useAppDispatch, useAuth, useProfile } from '../../hooks/hooks';
 import { setLastLocation, userLogout } from '../../redux/features/auth/authSlice';
 import { flushBlog } from '../../redux/features/blog/blogSlice';
 import { flushUser } from '../../redux/features/user/userSlice';
@@ -16,6 +16,7 @@ function classNames(...classes: any) {
 }
 const Navbar = () => {
   const location = useLocation();
+  const { userInfo } = useProfile();
   const dispatch = useAppDispatch();
   const setLastLocationHandler = () => {
     dispatch(setLastLocation('/'))
@@ -27,9 +28,9 @@ const Navbar = () => {
   }
   const { isAuth } = useAuth();
   return (
-    <header className="fixed top-0 container w-[100vw] z-20">
+    <header className="fixed top-0 w-full z-20">
       <nav className="bg-gray-700 px-4">
-        <div className="container mx-auto py-4 flex justify-between items-center">
+        <div className="mx-auto py-4 flex justify-between items-center">
           <Link to='/'>
             <h1 className="text-2xl font-bold text-gray-50">
               <img src={logoImage} alt="Logo" className="h-8 w-8 mr-2 inline rounded-full" />
@@ -88,13 +89,13 @@ const Navbar = () => {
                 Login/Register
               </button>
             </Link>
-            : <Menu as="div" className="relative ml-3 hidden sm:flex md:flex lg:flex items-center space-x-8">
+            : <Menu as="div" className="w-16 relative ml-3 hidden sm:flex md:flex lg:flex items-center space-x-8">
               <div>
                 <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-1.5" />
                   <img
                     className="h-8 w-8 rounded-full"
-                    src="https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg"
+                    src={userInfo.imgUrl ? userInfo.imgUrl : "https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg"}
                     alt=""
                   />
                 </Menu.Button>
@@ -108,7 +109,7 @@ const Navbar = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 mt-8 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
                       <Link
@@ -135,7 +136,7 @@ const Navbar = () => {
             </Menu>
           }
           <div className='flex sm:hidden md:hidden lg:hidden items-center'>
-          <SideNavbar setLastLocationHandler={setLastLocationHandler} logoutHandler={logoutHandler} />
+          <SideNavbar imgUrl={userInfo.imgUrl} setLastLocationHandler={setLastLocationHandler} logoutHandler={logoutHandler} />
           </div>
         </div>
       </nav>

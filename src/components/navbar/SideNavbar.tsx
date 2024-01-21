@@ -27,6 +27,10 @@ const SideNavbar = (props: any) => {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+  const logout=()=>{
+    closeSidebar();
+    props.logoutHandler();
+  }
 
   return (
     <>
@@ -42,7 +46,7 @@ const SideNavbar = (props: any) => {
         ></div>
       )}
       <div
-        className={`fixed right-0 p-4 w-2/5 top-0 bottom-0 bg-white ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed right-0 p-4 w-2/5 top-0 bottom-0 bg-blue-200 ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
           } transition-transform ease-in-out duration-300 z-50`}
       >
         {!isAuth ?
@@ -57,7 +61,7 @@ const SideNavbar = (props: any) => {
                 <span className="absolute -inset-1.5" />
                 <img
                   className="h-8 w-8 rounded-full"
-                  src="https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg"
+                  src={props.imgUrl ? props.imgUrl : "https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg"}
                   alt=""
                 />
               </Menu.Button>
@@ -76,6 +80,7 @@ const SideNavbar = (props: any) => {
                   {({ active }) => (
                     <Link
                       to="/v1/user/profile"
+                      onClick={closeSidebar}
                       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                     >
                       Your Profile
@@ -85,7 +90,7 @@ const SideNavbar = (props: any) => {
                 <Menu.Item>
                   {({ active }) => (
                     <Link
-                      onClick={props.logoutHandler}
+                      onClick={logout}
                       to="#"
                       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                     >
@@ -135,33 +140,33 @@ const SideNavbar = (props: any) => {
               <span className={`text-black ${location.pathname === "/about-community" ? 'underline underline-offset-8' : ''}`}>About Us</span>
             </div>
           </Link>
-         {isAuth && <Link to='#' onClick={props.logoutHandler}>
+         {isAuth && <Link to='#' onClick={logout}>
              <div className="flex items-center space-x-2 cursor-pointer">
             
-             <span className={`text-black ${location.pathname === "/about-community" ? 'underline underline-offset-8' : ''}`}>Logout</span>
+             <span className='text-black'>Logout</span>
            </div>
             </Link>}
         </div>
-        <div className='absolute bottom-16 mx-auto w-full text-center'>
+        <div className='absolute bottom-16 px-4 flex flex-col items-center justify-center'>
            <h2 className='text-black text-lg my-4'>Contact Us:</h2>
            <div className="flex flex-col justify-center items-center w-full space-y-4">
             <div className='flex space-x-4'>
-            <a target="_blank" href="https://www.linkedin.com/company/betalabs-iiitkottayam/mycompany/" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" onClick={closeSidebar} href="https://www.linkedin.com/company/betalabs-iiitkottayam/mycompany/" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaLinkedin size='1.5rem'  color="black"/>
             </a>
-            <a target="_blank" href="https://chat.whatsapp.com/GmHkvedR1Q8BKDHTikVH1P" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" onClick={closeSidebar} href="https://chat.whatsapp.com/GmHkvedR1Q8BKDHTikVH1P" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaWhatsapp size='1.5rem'  color="black"/>
             </a>
-            <a target="_blank" href="https://github.com/BetaHacks-Community-IIIT-Kottayam" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" onClick={closeSidebar} href="https://github.com/BetaHacks-Community-IIIT-Kottayam" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaGithub size='1.5rem'  color="black"/>
             </a>
             </div>
             
             <div className='flex space-x-4'>
-            <a onClick={(e) => {window.location.href ='mailto:betahackscommunity@gmail.com';}} className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a onClick={(e) => {window.location.href ='mailto:betahackscommunity@gmail.com'; closeSidebar()}} className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <HiOutlineMail size='1.5rem'  color="black"/>
             </a>
-            <a target="_blank" href="https://t.me/betahackscommunity" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
+            <a target="_blank" onClick={closeSidebar} href="https://t.me/betahackscommunity" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">
             <FaTelegram size='1.5rem'  color="black"/>
             </a>
             </div>

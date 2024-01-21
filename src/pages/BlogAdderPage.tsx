@@ -93,7 +93,7 @@ const BlogAdder = () => {
   }, [isAdded,status.isError])
   
   return (
-    <form className="mx-auto max-w-[100%] mt-24 min-h-screen mb-10">
+    <form className="mx-auto max-w-[100vw] mt-24 min-h-screen mb-10 px-4">
       {status.isLoading && <Overlay message='Processing request, please wait......' />}
       {isAdded && <ResponsePopup type='success' />}
       {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={retrySubmitHandler} />}
@@ -124,7 +124,7 @@ const BlogAdder = () => {
               {errors[index] && <p className="block text-red-500 text-xs mt-1">*This field is required.</p>}
             </div>
           ))}
-          <div className="flex items-center mt-8 justify-center gap-6 text-blue-700 p-4">
+          <div className="flex flex-wrap items-center mt-8 justify-center gap-6 text-blue-700 p-4">
             <p className='block text-sm font-medium leading-6 text-gray-900'>Click to add:</p>
             <span onClick={AddHeading} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Heading</span>
             <span onClick={AddParagraph} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Paragraph</span>
