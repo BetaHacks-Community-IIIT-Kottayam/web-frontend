@@ -10,6 +10,7 @@ import { userLogin, verifyTokenService } from '../redux/features/auth/authServic
 import { useAppDispatch, useAuth } from '../hooks/hooks';
 import ResponsePopup from '../components/ui/ResponsePopup';
 import { userLoginRetry } from '../redux/features/auth/authSlice';
+import sideimg from '../images/login.jpeg';
 
 const LoginPage = () => {
   const { isAuth, token, status, lastLocation } = useAuth();
@@ -130,10 +131,11 @@ const LoginPage = () => {
           </div>
         </div>
         <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
-          <div
-            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://static.vecteezy.com/system/resources/previews/006/585/473/original/illustration-graphic-cartoon-character-of-cyber-security-vector.jpg')" }}
-          ></div>
+          <img
+
+            className="w-[80%] h-[90%] m-auto"
+            src={sideimg}
+          ></img>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import { sendOtpService, userRegister, verifyOtpService } from '../redux/feature
 import Overlay from '../components/ui/Overlay';
 import { userLoginRetry } from '../redux/features/auth/authSlice';
 import ModalOverlay from '../components/ui/ModalOverlay';
+import sideimg from '../images/register.jpeg';
 
 const RegisterPage = () => {
   const { isAuth, status, lastLocation } = useAuth();
@@ -111,7 +112,7 @@ const RegisterPage = () => {
         onFormSubmit();
       }
     }, 1000);
-  }, [isAuth, status.isError,status.isEmailVerified])
+  }, [isAuth, status.isError, status.isEmailVerified])
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       {status.isLoading && <Overlay message='Registering, please wait....' />}
@@ -244,10 +245,11 @@ const RegisterPage = () => {
           </div>
         </div>
         <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
-          <div
-            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://codegeeks.solutions/wp-content/uploads/2023/07/5259899_20634-1024x735.jpg')" }}
-          ></div>
+          <img
+
+            className="w-[80%] h-[90%] m-auto"
+            src={sideimg}
+          ></img>
         </div>
       </div>
     </div>
