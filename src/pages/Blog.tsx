@@ -28,7 +28,7 @@ const Blog = () => {
         }
     }, [isFetched, status.isError]);
     return (
-        <div className="container min-h-screen mt-32 mx-auto">
+        <div className="container min-h-screen mt-32 mx-auto w-[100vw] overflow-hidden">
             {status.isLoading && <Overlay message="Fetching blog, please wait...." />}
             {status.isError && <ResponsePopup type="error" text={status.errorMessage} onClose={errorPopHandler} />}
             <section className="px-4">
@@ -40,7 +40,7 @@ const Blog = () => {
                         {i === 2 && <Paragraph content={currentBlog.content[index]} />}
                         {i === 3 && <Note content={currentBlog.content[index]} />}
                         {i === 4 && <BlogImage url={currentBlog.content[index]} alt="Loading image.." />}
-                        {i === 5 && <a href={currentBlog.content[index]} target="_blank" className="text-blue-500 hover:underline" ><p className="mb-6">{currentBlog.content[index]}</p></a>}
+                        {i === 5 && <a href={currentBlog.content[index]} target="_blank" className="w-full text-blue-500 hover:underline" ><p className="mb-6 whitespace-normal break-words">{currentBlog.content[index]}</p></a>}
                         {i === 6 && <Code content={currentBlog.content[index]} />}
 
                     </div>

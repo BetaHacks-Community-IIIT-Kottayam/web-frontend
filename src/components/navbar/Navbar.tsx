@@ -27,7 +27,7 @@ const Navbar = () => {
   }
   const { isAuth } = useAuth();
   return (
-    <header className="fixed top-0 w-full z-20">
+    <header className="fixed top-0 container w-[100vw] z-20">
       <nav className="bg-gray-700 px-4">
         <div className="container mx-auto py-4 flex justify-between items-center">
           <Link to='/'>
