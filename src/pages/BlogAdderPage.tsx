@@ -93,7 +93,7 @@ const BlogAdder = () => {
   }, [isAdded,status.isError])
   
   return (
-    <form className="mx-auto max-w-[100vw] mt-24 min-h-screen mb-10 px-4">
+    <form className="mx-auto max-w-2xl mt-24 min-h-screen mb-10 px-4">
       {status.isLoading && <Overlay message='Processing request, please wait......' />}
       {isAdded && <ResponsePopup type='success' />}
       {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={retrySubmitHandler} />}
