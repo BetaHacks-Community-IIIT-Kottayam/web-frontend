@@ -13,22 +13,27 @@ import { userLoginRetry } from '../redux/features/auth/authSlice';
 import sideimg from '../images/login.jpeg';
 
 const LoginPage = () => {
-  const { isAuth, token, status, lastLocation } = useAuth();
+  const { isAuth, status, lastLocation } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
+    setErr('');
   }
   const onPasswordChangeHandler = (event: any) => {
     setPassword(event.target.value);
+    setErr('');
   }
-  const onFormSubmit = () => {
+  const onFormSubmit = (e:any) => {
+    e.preventDefault();
     const isEmailValid = validateEmailInput(email);
     const isPasswordValid = password.length >= 8;
     if (!isEmailValid || !isPasswordValid) {
+      setErr('Invalid email or password');
       return;
     }
     const loginCredentials = {
@@ -106,7 +111,7 @@ const LoginPage = () => {
               </div>
 
               {/* Email and Password Input */}
-              <div className="mx-auto max-w-xs">
+              <form className="mx-auto max-w-xs">
 
                 <div onChange={onEmailChangeHandler}>
                   <Input type='email' placeholder='Email' />
@@ -115,13 +120,13 @@ const LoginPage = () => {
                   <Input type='password' placeholder='Password' />
                 </div>
 
-
+                {err && <p className='text-red-600 text-sm text-center'>{err}</p>}
                 {/* Sign Ip Button */}
                 <div onClick={onFormSubmit}>
                   <LargeButton type='submit' name='Sign In' />
                 </div>
 
-              </div>
+              </form>
               <p className="mt-2 text-center text-sm text-gray-600 max-w"> Or &nbsp;
                 <Link to="/auth/v1/register" className="font-medium text-blue-600 hover:text-blue-500">
                   create an account

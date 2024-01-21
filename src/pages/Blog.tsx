@@ -11,6 +11,7 @@ import Overlay from "../components/ui/Overlay";
 import ResponsePopup from "../components/ui/ResponsePopup";
 import Code from "../components/ui/Code";
 import { resetStatus } from "../redux/features/system/contentSlice";
+import { userLogout } from "../redux/features/auth/authSlice";
 const Blog = () => {
     const { currentBlog, status, isFetched } = useContent();
     const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ const Blog = () => {
     const errorPopHandler=()=>{
         if(status.errorMessage.message==='Unauthorized'){
             dispatch(resetStatus());
+            dispatch(userLogout());
             navigate('/auth/v1/login');
         }
     }

@@ -3,13 +3,14 @@ import logoImage from '../../images/logo.jpeg';
 import { GoHome, GoProject } from "react-icons/go";
 import Button from '../ui/Button';
 import { Link, useLocation } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { useAppDispatch, useAuth, useProfile } from '../../hooks/hooks';
 import { setLastLocation, userLogout } from '../../redux/features/auth/authSlice';
 import { flushBlog } from '../../redux/features/blog/blogSlice';
 import { flushUser } from '../../redux/features/user/userSlice';
 import SideNavbar from './SideNavbar';
+import ModalOverlay from '../ui/ModalOverlay';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -17,6 +18,7 @@ function classNames(...classes: any) {
 const Navbar = () => {
   const location = useLocation();
   const { userInfo } = useProfile();
+  const [popup,setPop]=useState(false);
   const dispatch = useAppDispatch();
   const setLastLocationHandler = () => {
     dispatch(setLastLocation('/'))
@@ -25,10 +27,37 @@ const Navbar = () => {
     dispatch(flushBlog());
     dispatch(flushUser());
     dispatch(userLogout());
+    setPop(false);
   }
   const { isAuth } = useAuth();
   return (
     <header className="fixed top-0 w-full z-20">
+      {popup && <ModalOverlay>
+      <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-4 inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
+            <div className="md:flex items-center">
+                <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
+                <i className="bx bx-error text-3xl">
+                &#9888;
+                </i>
+                </div>
+                <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
+                <p className="font-bold">Warning!</p>
+                <p className="text-sm text-gray-700 mt-1">Are you sure you want to logout ?
+                </p>
+                </div>
+            </div>
+            <div className="text-center md:text-right mt-4 md:flex md:justify-end">
+                <button onClick={logoutHandler}
+                 id="confirm-delete-btn" className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2">
+                    Log out
+                </button>
+                <button onClick={()=>{setPop(false)}}
+                id="confirm-cancel-btn" className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1">
+                Cancel
+                </button>
+            </div>
+        </div>
+      </ModalOverlay>}
       <nav className="bg-gray-700 px-4">
         <div className="mx-auto py-4 flex justify-between items-center">
           <Link to='/'>
@@ -123,11 +152,11 @@ const Navbar = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <Link
-                        onClick={logoutHandler}
+                        onClick={()=>{setPop(true)}}
                         to="#"
                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                       >
-                        Sign out
+                        Log out
                       </Link>
                     )}
                   </Menu.Item>
@@ -136,7 +165,7 @@ const Navbar = () => {
             </Menu>
           }
           <div className='flex sm:hidden md:hidden lg:hidden items-center'>
-          <SideNavbar imgUrl={userInfo.imgUrl} setLastLocationHandler={setLastLocationHandler} logoutHandler={logoutHandler} />
+          <SideNavbar imgUrl={userInfo.imgUrl} setLastLocationHandler={setLastLocationHandler} logoutHandler={()=>{setPop(true)}} />
           </div>
         </div>
       </nav>

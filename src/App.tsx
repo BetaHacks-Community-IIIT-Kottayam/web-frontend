@@ -7,17 +7,16 @@ import { getUserProfile } from './redux/features/user/userService';
 
 function App() {
   const {isFetchedAll}=useContent();
-  const { userInfo, status } = useProfile();
   const {isAuth}=useAuth();
   const dispatch=useAppDispatch();
   useEffect(() => {
       if(!isFetchedAll){
          dispatch(getAllBlogsService());
       }
-      if (!userInfo.email && !status.isError && isAuth) {
+      if (isAuth) {
         dispatch(getUserProfile());
     }
-  }, [isFetchedAll]);
+  }, [isFetchedAll,isAuth]);
   return <PageRoutes/>;
 }
 
