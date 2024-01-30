@@ -21,6 +21,7 @@ export interface UHeaderProps{
     title:string,
     author:string,
     id?:string,
+    linkedIn:string,
     upvotes:number
 }
 export interface UInputProps{

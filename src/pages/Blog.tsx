@@ -37,7 +37,7 @@ const Blog = () => {
                 {currentBlog?.index.map((i, index) => (
                     <div>
                         {i === 0 && <BlogHeader title={currentBlog.name} id={id}
-                            author={currentBlog.author} upvotes={currentBlog.upvotes} />}
+                            author={currentBlog.author} upvotes={currentBlog.upvotes} linkedIn={currentBlog.linkedIn} />}
                         {i === 1 && <SubHeading content={currentBlog.content[index]} />}
                         {i === 2 && <Paragraph content={currentBlog.content[index]} />}
                         {i === 3 && <Note content={currentBlog.content[index]} />}

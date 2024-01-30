@@ -14,11 +14,15 @@ const BlogAdder = () => {
   const { index, content,images, status,isAdded } = useBlog();
   const dispatch = useAppDispatch();
   const [errors,setErrors]=useState([false]);
+  const [linkedIn,setLinkedIn]=useState('');
   const changeHandler = (event: any, i: any) => {
     dispatch(editContent({
       i,
       value: event.target.value
     }));
+  }
+  const onLinkedInChange=(event:any)=>{
+    setLinkedIn(event.target.value);
   }
   const AddHeading = () => {
     dispatch(addContent(''));
@@ -76,7 +80,8 @@ const BlogAdder = () => {
     }
     const blog = {
       index,
-      content:finalContent
+      content:finalContent,
+      linkedIn,
     }
     dispatch(addNewBlogService(blog));
   }
@@ -100,6 +105,9 @@ const BlogAdder = () => {
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <Note content=' Your blog will be displayed in the sequence of tags selected in the form below.' />
+          <div onChange={onLinkedInChange}>
+          <Input onDelete={()=>{}} type='text' id='linkedIn' placeholder='Paste url here' name='linkedIn' label='Your LinkedIn profile url' />
+          </div>
           {index.map((i, index) => (
             <div onChange={(e) => { changeHandler(e, index) }} className="mt-10 grid grid-cols-1 gap-x-6 ">
               {i === 0 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='title' placeholder='Blog Title' name='title' label='Title' />}
