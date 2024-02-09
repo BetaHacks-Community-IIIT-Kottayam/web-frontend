@@ -10,24 +10,30 @@ import { userLogin, verifyTokenService } from '../redux/features/auth/authServic
 import { useAppDispatch, useAuth } from '../hooks/hooks';
 import ResponsePopup from '../components/ui/ResponsePopup';
 import { userLoginRetry } from '../redux/features/auth/authSlice';
+import sideimg from '../images/login.jpeg';
 
 const LoginPage = () => {
-  const { isAuth, token, status, lastLocation } = useAuth();
+  const { isAuth, status, lastLocation } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onEmailChangeHandler = (event: any) => {
     setEmail(event.target.value);
+    setErr('');
   }
   const onPasswordChangeHandler = (event: any) => {
     setPassword(event.target.value);
+    setErr('');
   }
-  const onFormSubmit = () => {
+  const onFormSubmit = (e:any) => {
+    e.preventDefault();
     const isEmailValid = validateEmailInput(email);
     const isPasswordValid = password.length >= 8;
     if (!isEmailValid || !isPasswordValid) {
+      setErr('Invalid email or password');
       return;
     }
     const loginCredentials = {
@@ -68,9 +74,9 @@ const LoginPage = () => {
             <h1 className="text-2xl xl:text-3xl font-extrabold">
               Sign In
             </h1>
-            <div className="w-full flex-1 mt-8">
-              <div className="flex flex-col items-center">
-                {/* Google Sign Up Button */}
+            <div className="w-full flex-1">
+              {/* <div className="flex flex-col items-center">
+                // Google Sign Up Button 
                 <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-2 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                   <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -95,17 +101,17 @@ const LoginPage = () => {
                   <span className="ml-4">Sign In with Google</span>
                 </button>
 
-              </div>
+              </div> */}
 
               {/* Email Sign Up */}
               <div className="my-10 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                  Or sign in with e-mail
+                  Sign in with e-mail
                 </div>
               </div>
 
               {/* Email and Password Input */}
-              <div className="mx-auto max-w-xs">
+              <form className="mx-auto max-w-xs">
 
                 <div onChange={onEmailChangeHandler}>
                   <Input type='email' placeholder='Email' />
@@ -114,13 +120,13 @@ const LoginPage = () => {
                   <Input type='password' placeholder='Password' />
                 </div>
 
-
+                {err && <p className='text-red-600 text-sm text-center'>{err}</p>}
                 {/* Sign Ip Button */}
                 <div onClick={onFormSubmit}>
                   <LargeButton type='submit' name='Sign In' />
                 </div>
 
-              </div>
+              </form>
               <p className="mt-2 text-center text-sm text-gray-600 max-w"> Or &nbsp;
                 <Link to="/auth/v1/register" className="font-medium text-blue-600 hover:text-blue-500">
                   create an account
@@ -130,10 +136,11 @@ const LoginPage = () => {
           </div>
         </div>
         <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
-          <div
-            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://static.vecteezy.com/system/resources/previews/006/585/473/original/illustration-graphic-cartoon-character-of-cyber-security-vector.jpg')" }}
-          ></div>
+          <img
+
+            className="w-[80%] h-[90%] m-auto"
+            src={sideimg}
+          ></img>
         </div>
       </div>
     </div>

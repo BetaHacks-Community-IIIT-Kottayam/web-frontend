@@ -41,7 +41,8 @@ export interface ILoginFormState {
 }
 export interface IAddBlogState {
     index: number[],
-    content: string[]
+    content: string[],
+    linkedIn:string,
 }
 export interface IUploadImgState {
     formData: FormData

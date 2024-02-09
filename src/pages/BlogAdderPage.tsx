@@ -14,11 +14,15 @@ const BlogAdder = () => {
   const { index, content,images, status,isAdded } = useBlog();
   const dispatch = useAppDispatch();
   const [errors,setErrors]=useState([false]);
+  const [linkedIn,setLinkedIn]=useState('');
   const changeHandler = (event: any, i: any) => {
     dispatch(editContent({
       i,
       value: event.target.value
     }));
+  }
+  const onLinkedInChange=(event:any)=>{
+    setLinkedIn(event.target.value);
   }
   const AddHeading = () => {
     dispatch(addContent(''));
@@ -76,7 +80,8 @@ const BlogAdder = () => {
     }
     const blog = {
       index,
-      content:finalContent
+      content:finalContent,
+      linkedIn,
     }
     dispatch(addNewBlogService(blog));
   }
@@ -93,13 +98,16 @@ const BlogAdder = () => {
   }, [isAdded,status.isError])
   
   return (
-    <form className="mx-auto max-w-2xl mt-24 min-h-screen mb-10">
+    <form className="mx-auto max-w-2xl mt-24 min-h-screen mb-10 px-4">
       {status.isLoading && <Overlay message='Processing request, please wait......' />}
       {isAdded && <ResponsePopup type='success' />}
       {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={retrySubmitHandler} />}
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <Note content=' Your blog will be displayed in the sequence of tags selected in the form below.' />
+          <div onChange={onLinkedInChange}>
+          <Input onDelete={()=>{}} type='text' id='linkedIn' placeholder='Paste url here' name='linkedIn' label='Your LinkedIn profile url' />
+          </div>
           {index.map((i, index) => (
             <div onChange={(e) => { changeHandler(e, index) }} className="mt-10 grid grid-cols-1 gap-x-6 ">
               {i === 0 && <Input onDelete={()=>{removeElementHandler(index)}} type='text' id='title' placeholder='Blog Title' name='title' label='Title' />}
@@ -124,7 +132,7 @@ const BlogAdder = () => {
               {errors[index] && <p className="block text-red-500 text-xs mt-1">*This field is required.</p>}
             </div>
           ))}
-          <div className="flex items-center mt-8 justify-center gap-6 text-blue-700 p-4">
+          <div className="flex flex-wrap items-center mt-8 justify-center gap-6 text-blue-700 p-4">
             <p className='block text-sm font-medium leading-6 text-gray-900'>Click to add:</p>
             <span onClick={AddHeading} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Heading</span>
             <span onClick={AddParagraph} className='text-blue-500 hover:text-blue-700 cursor-pointer'>Paragraph</span>

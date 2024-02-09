@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useProfile } from "../hooks/hooks";
-import { getUserProfile } from "../redux/features/user/userService";
+import { getUserProfile, uploadProfileImage } from "../redux/features/user/userService";
 import Overlay from "../components/ui/Overlay";
 import { Link } from "react-router-dom";
 import { newFetch } from "../redux/features/system/contentSlice";
@@ -16,53 +16,87 @@ const Profile = () => {
     const newFetchHandler = () => {
         dispatch(newFetch());
     }
-    const logoutHandler=()=>{
+    const logoutHandler = () => {
         dispatch(flushBlog());
         dispatch(flushUser());
         dispatch(userLogout());
-      }
+    }
     useEffect(() => {
         if (!userInfo.email && !status.isError) {
             dispatch(getUserProfile());
         }
     });
+    const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        setSelectedFile(file as any);
+    };
+    const uploadHandler = (event: any) => {
+        event.preventDefault();
+        if (!selectedFile) {
+            return;
+        }
+        // Create FormData object
+        const formData = new FormData();
+        formData.append('file', selectedFile as any);
+        //create a random string for file name
+        const fileName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        formData.append('fileName', fileName);
+
+        dispatch(uploadProfileImage({ formData }));
+        setSelectedFile(null);
+    }
 
     return (
         <div>
             {status.isError && <ResponsePopup type="error" onClose={logoutHandler} text='Error loading profile' />}
             {status.isLoading ?
-                <Overlay message="Loading profile, please wait...." />
+                <Overlay message="Processing your request, please wait...." />
                 : <>
                     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-                    <div className="flex flex-col mt-16 mt items-center justify-center min-h-screen bg-gray-900">
+                    <div className="flex flex-col mt-16 px-4 items-center justify-center min-h-screen bg-gray-900">
                         <div className="container m-4">
                             <div className="max-w-3xl w-full mx-auto grid gap-4 grid-cols-1">
                                 {/* Profile card */}
                                 <div className="flex flex-col top-0 z-10">
                                     <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4">
                                         <div className="flex-none sm:flex">
-                                            <div className="relative h-32 w-32 sm:mb-0 mb-3">
-                                                <img src="https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg" alt="profile Img" className="w-32 h-32 object-cover rounded-2xl" />
-                                                <a href="#" className="absolute -right-2 bottom-2 -ml-3 text-white p-1 text-xs bg-green-400 hover:bg-green-500 font-medium tracking-wider rounded-full transition ease-in duration-300">
+                                            <div className="flex relative h-32 w-32 sm:mb-0 mb-3">
+                                                <img src={userInfo.imgUrl ? userInfo.imgUrl : 'https://previews.123rf.com/images/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration.jpg'} alt="profile Img" className="w-32 h-32 object-cover rounded-2xl" />
+                                                <label htmlFor="file-upload"
+                                                    className="absolute -right-2 bottom-2 -ml-3 text-white p-1 text-xs bg-green-400 hover:bg-green-500 font-medium tracking-wider rounded-full transition ease-in duration-300">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
                                                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                                     </svg>
-                                                </a>
+                                                    <input id="file-upload" onChange={handleFileChange} name="file-upload" type="file" className="sr-only" />
+                                                </label>
+                                                {selectedFile && <div className="block md:hidden">
+                                                    <p className="text-white text-center">{selectedFile && selectedFile.name}</p>
+                                                    <button onClick={uploadHandler} className="ml-6 mt-4 bg-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">Upload</button>
+
+                                                </div>}
+
                                             </div>
                                             <div className="flex-auto sm:ml-5 justify-evenly">
                                                 <div className="flex items-center justify-between sm:mt-2">
                                                     <div className="flex items-center">
                                                         <div className="flex flex-col">
                                                             <div className="w-full flex-none text-lg text-gray-200 font-bold leading-none">{userInfo.name?.toUpperCase()}</div>
-                                                            <div className="flex-auto text-gray-400 my-1">
+                                                            {/* <div className="flex-auto text-gray-400 my-1">
                                                                 <span className="mr-3">Full Stack Developer</span><span className="mr-3 border-r border-gray-600 max-h-0"></span><span>Latur, INDIA</span>
                                                             </div>
                                                             <div className="flex-auto text-gray-400 my-1">
                                                                 <span className="mr-3">Indian Institute of Information Technology Kottayam</span><span className="mr-3 border-gray-600 max-h-0"></span>
-                                                            </div>
+                                                            </div> */}
                                                             <div className="flex-auto text-gray-400 my-1">
                                                                 <span className="mr-3">{userInfo.email}</span><span className="mr-3 border-gray-600 max-h-0"></span>
                                                             </div>
+                                                            {selectedFile && <div className="hidden md:block">
+                                                                <p className="text-white ml-6">{selectedFile && selectedFile.name}</p>
+
+                                                                <button onClick={uploadHandler} className="ml-6 mt-4 bg-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">Upload</button>
+
+                                                            </div>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,8 +160,8 @@ const Profile = () => {
                                                     <div className="flex flex-row items-center">
                                                         <div className="flex flex-col">
                                                             {userInfo.activity ?
-                                                                userInfo.activity.map((blog) => (
-                                                                    <div className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
+                                                                userInfo.activity.map((blog, index) => (
+                                                                    <div key={index} className="bg-gray-800 border border-gray-800 shadow-lg rounded-2xl p-4 w-full flex justify-between items-center mb-4">
                                                                         <h3 className="text-lg font-semibold text-gray-200 mb-2 ">{blog.name}</h3>
                                                                         <Link onClick={newFetchHandler} to={`/v1/blogs/${blog.blogId}`} className="text-blue-500 hover:underline ml-4">View</Link>
                                                                     </div>

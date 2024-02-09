@@ -2,7 +2,7 @@ import { FaGithub,FaWhatsapp,FaTelegram,FaLinkedin} from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 const Footer = () => {
     return (
-      <footer className="bg-black text-center text-white w-full">
+      <footer className="bg-black text-center text-white w-full relative">
         <div className="pt-7 w-full">
           <div className="mb-4 flex justify-center items-center space-x-8 w-full">
             <a target="_blank" href="https://www.linkedin.com/company/betalabs-iiitkottayam/mycompany/" className="text-neutral-800 dark:text-neutral-200 text-6xl cursor-pointer">

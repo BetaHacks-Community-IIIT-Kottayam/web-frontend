@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IUserSliceState } from "../../types/states.types";
-import { getUserProfile } from "./userService";
+import { getUserProfile, uploadProfileImage } from "./userService";
 import { RootState } from "../../store/store";
 
 
@@ -48,6 +48,22 @@ const userSlice=createSlice({
             state.status.errorMessage=undefined;
         })
         .addCase(getUserProfile.rejected,(state,action)=>{
+            state.status.isError=true;
+            state.status.errorMessage=action.payload;
+            state.status.isLoading=false;
+        })
+        .addCase(uploadProfileImage.pending,(state)=>{
+            state.status.isLoading=true;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(uploadProfileImage.fulfilled,(state,action)=>{
+            state.userInfo.imgUrl=action.payload.imageUrl;
+            state.status.isLoading=false;
+            state.status.isError=false;
+            state.status.errorMessage=undefined;
+        })
+        .addCase(uploadProfileImage.rejected,(state,action)=>{
             state.status.isError=true;
             state.status.errorMessage=action.payload;
             state.status.isLoading=false;

@@ -54,6 +54,7 @@ export interface IGetBlog {
      createdOn: string,
      createdBy: string,
      index: number[],
+     linkedIn: string,
      content: string[],
 }
 export interface IGetBlogResponse {
