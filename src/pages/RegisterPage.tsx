@@ -9,9 +9,10 @@ import { validateEmailInput, validateMobileInput, validateNameInput } from '../u
 import { useAppDispatch, useAuth } from '../hooks/hooks';
 import { sendOtpService, userRegister, verifyOtpService } from '../redux/features/auth/authService';
 import Overlay from '../components/ui/Overlay';
-import { userLoginRetry } from '../redux/features/auth/authSlice';
+import { setIsotpSent, userLoginRetry } from '../redux/features/auth/authSlice';
 import ModalOverlay from '../components/ui/ModalOverlay';
 import sideimg from '../images/register.jpeg';
+import { MdEdit } from 'react-icons/md';
 
 const RegisterPage = () => {
   const { isAuth, status, lastLocation } = useAuth();
@@ -88,6 +89,7 @@ const RegisterPage = () => {
     }
     if (!status.isEmailVerified) {
       setVerifyEmail(true);
+      dispatch(setIsotpSent(false));
       return;
     }
     const newUserCredentials = {
@@ -130,14 +132,17 @@ const RegisterPage = () => {
             className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
 
           /> :
-            <input
+            <div>
+             <p className='mb-2 text-[0.8rem] text-gray-700'>OTP sent to <span className='text-blue-500'>{email} <MdEdit onClick={()=>{dispatch(setIsotpSent(false))}} className='inline cursor-pointer color-blue-500' size='0.8rem'/></span></p>
+              <input
               placeholder='Enter OTP'
               type='text'
               value={otp}
               onChange={onOtpChangeHandler}
-              className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
+              className="w-full block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
 
             />
+            </div>
           }
           {(err || status.errorMessage) && <p className='text-red-600 text-sm text-center'>{err || status.errorMessage}</p>}
 
