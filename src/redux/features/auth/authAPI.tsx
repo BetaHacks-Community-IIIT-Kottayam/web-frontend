@@ -1,11 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {  createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IAuthenticationResponse, IErrorResponse, ISendOtpResponse, IVerifyOtpOtpResponse } from "../../types/response.types";
 import { ILoginFormState, IRegisterFormState, IResetPasswordState, ISendOtpState, IVerifyOtpState } from "../../types/states.types";
+import { RootState } from '../../store/store';
 const baseUrl = process.env.REACT_APP_API_URL;
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({ baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    }, }),
   endpoints: (builder) => ({
     userLogin: builder.mutation<IAuthenticationResponse, ILoginFormState>({
       query: (loginCredentials) => ({
