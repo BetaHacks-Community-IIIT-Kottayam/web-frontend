@@ -52,6 +52,15 @@ export interface IVerifyOtpState {
     email: string,
     otp:string
 }
+export interface ISendOtpState {
+    email: string,
+    type:string
+}
+export interface IResetPasswordState {
+    email: string,
+    password:string,
+    cnfPassword:string,
+}
 
 export interface IRegisterFormState {
     email: string,

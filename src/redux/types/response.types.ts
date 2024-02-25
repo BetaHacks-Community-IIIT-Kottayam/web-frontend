@@ -42,6 +42,8 @@ export interface IGetUserProfileResponse {
 }
 export interface ISendOtpResponse {
      message: string,
+     error?:any,
+     data?:any
 }
 export interface IVerifyOtpOtpResponse {
      message: string,

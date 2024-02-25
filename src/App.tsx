@@ -4,6 +4,8 @@ import PageRoutes from './components/page-components/pageRoutes';
 import { useAppDispatch, useAuth, useContent, useProfile } from './hooks/hooks';
 import { getAllBlogsService } from './redux/features/system/contentService';
 import { getUserProfile } from './redux/features/user/userService';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const {isFetchedAll}=useContent();
@@ -17,7 +19,12 @@ function App() {
         dispatch(getUserProfile());
     }
   }, [isFetchedAll,isAuth]);
-  return <PageRoutes/>;
+  return <div>
+  {/* Include the ToastContainer component */}
+  <ToastContainer />
+  {/* Other components */}
+  <PageRoutes />
+</div>
 }
 
 export default App;

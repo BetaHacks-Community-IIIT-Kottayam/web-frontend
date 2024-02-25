@@ -39,6 +39,10 @@ const authSlice=createSlice({
         },
         setIsotpSent:(state,action)=>{
             state.status.isOtpSent=action.payload;
+        },
+        setAuthenticated:(state,action)=>{
+            state.isAuth=true;
+            state.token=action.payload;
         }
     },
     extraReducers:(builder)=>{
@@ -125,6 +129,6 @@ const authSlice=createSlice({
 
 });
 
-export const {userLogout,setLastLocation,setIsotpSent,userLoginRetry}=authSlice.actions;
+export const {userLogout,setAuthenticated,setLastLocation,setIsotpSent,userLoginRetry}=authSlice.actions;
 export const selectAuth=(state:RootState)=>state.auth;
 export default authSlice.reducer;

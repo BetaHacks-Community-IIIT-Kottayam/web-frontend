@@ -27,7 +27,7 @@ const BlogImage = (props: UImgProps) => {
             )}
                 <img
                     src={props.url}
-                    className={`mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20 ${loading ? 'hidden' : ''}`}
+                    className={`mb-6 w-full max-h-[70vh] rounded-lg shadow-lg dark:shadow-black/20 ${loading ? 'hidden' : ''}`}
                     alt={props.alt}
                     onLoad={handleImageLoaded}
                     onError={handleImageError}
