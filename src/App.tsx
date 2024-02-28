@@ -19,7 +19,7 @@ function App() {
         dispatch(getUserProfile());
     }
   }, [isFetchedAll,isAuth]);
-  return <div>
+  return <div className='overflow-x-hidden'>
   {/* Include the ToastContainer component */}
   <ToastContainer />
   {/* Other components */}

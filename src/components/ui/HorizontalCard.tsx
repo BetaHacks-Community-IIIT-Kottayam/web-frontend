@@ -11,7 +11,7 @@ const Horizontalprops = (props:BProjectProps) => {
 
   return <div className="flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl mt-4 w-100 mx-2 relative">
         <div className="h-64 w-auto md:w-1/2">
-          <img className="inset-0 h-fullprops w-full object-cover object-center" src={props.card.img} alt={props.card.title} />
+          <img className="inset-0 h-full w-full object-cover object-center" src={props.card.img} alt={props.card.title} />
         </div>
         <div className="w-full py-4 px-6 text-gray-800 flex flex-col justify-between">
           <h3 className="font-semibold text-lg leading-tight truncate">{props.card.name}</h3>

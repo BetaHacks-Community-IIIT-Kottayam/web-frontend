@@ -67,3 +67,8 @@ export interface BCardProps{
     key:number,
     blog:IBlogCard
 }
+
+export interface BCountupProps{
+    title:string,
+    count:number
+}

@@ -5,6 +5,7 @@ import userReducer from '../features/user/userSlice';
 import contentReducer from '../features/system/contentSlice';
 import storage from 'redux-persist/lib/storage';
 import {authApi} from '../features/auth/authAPI';
+import {contentApi} from '../features/system/contentAPI';
 import {PERSIST,persistReducer,persistStore, } from 'redux-persist';
 
 const persistConfig={
@@ -22,6 +23,7 @@ const rootReducer=combineReducers({
     user:userReducer,
     content:contentReducer,
     [authApi.reducerPath]:authApi.reducer,
+    [contentApi.reducerPath]:contentApi.reducer,
 })
 
 export const store=configureStore({
@@ -32,7 +34,8 @@ export const store=configureStore({
             ignoredActions:[PERSIST]
         }
     }).concat((
-        authApi.middleware
+        authApi.middleware,
+        contentApi.middleware
     ))
 });
 
