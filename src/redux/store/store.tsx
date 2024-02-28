@@ -33,10 +33,10 @@ export const store=configureStore({
         serializableCheck:{
             ignoredActions:[PERSIST]
         }
-    }).concat((
-        authApi.middleware,
-        contentApi.middleware
-    ))
+    }).concat(
+        contentApi.middleware,
+        authApi.middleware
+    )
 });
 
 export const persistor=persistStore(store);

@@ -1,4 +1,3 @@
-import React from 'react'
 import CountUp from 'react-countup';
 import { BCountupProps } from '../../types/props.types';
 import { FaUsers } from "react-icons/fa";
@@ -15,7 +14,6 @@ const CountUpCard = (props:BCountupProps) => {
                   return <FaUsers color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="Blogs Posted"){
-                  console.log("Blogs Posted");
                   return <RiArticleFill color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="Upvotes"){

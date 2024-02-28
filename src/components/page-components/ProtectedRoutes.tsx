@@ -23,7 +23,7 @@ const ProtectedRoutes = () => {
             dispatch(flushBlog());
             dispatch(flushUser());
         }
-    },[data,isLoading,isError]);
+    },[data,isLoading,isError,isAuth]);
     
     return isLoading ? <Overlay message="Processing request please wait...." /> 
                      : isAuth ? <Outlet /> : <Navigate to='/auth/v1/login' />;
