@@ -11,27 +11,27 @@ const CountUpCard = (props:BCountupProps) => {
               
               let Icon= ()=>{
                 if(props.title==="Active Users"){
-                  return <FaUsers color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
+                  return <FaUsers className='bg-blue-100 p-4 rounded-full' color='#207EB8' style={{fontSize:'4.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="Blogs Posted"){
-                  return <RiArticleFill color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
+                  return <RiArticleFill className='bg-blue-100 p-4 rounded-full' color='#207EB8' style={{fontSize:'4.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="Upvotes"){
-                  return <BiSolidUpvote color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
+                  return <BiSolidUpvote className='bg-blue-100 p-4 rounded-full' color='#207EB8' style={{fontSize:'4.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="LinkedIn Followers"){
-                  return <BsLinkedin color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
+                  return <BsLinkedin className='bg-blue-100 p-4 rounded-full' color='#207EB8' style={{fontSize:'4.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else if(props.title==="Community Members"){
-                  return <MdGroupAdd color='#207EB8' style={{fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} />
+                  return <MdGroupAdd className='bg-blue-100 p-4 rounded-full' color='#207EB8' style={{fontSize:'4.5rem',textAlign:'center',fontWeight:'bold'}} />
                 }
                 else{
-                  return <FaUsers className="text-4xl text-blue-700"/>
+                  return <FaUsers className='bg-blue-100 p-4 rounded-full text-4xl text-blue-700' />
                 }
               
               };
   return (
-          <div style={{borderRadius:'16px'}} className="bg-blue-100 py-6 px-4 flex flex-col items-center justify-center">
+          <div style={{borderRadius:'16px'}} className="py-6 px-4 flex flex-col items-center justify-center">
               <Icon/>
               <CountUp style={{marginTop:'10px',fontSize:'2.5rem',textAlign:'center',fontWeight:'bold'}} start={0} end={props.count} duration={2} separator="," />
               <h3 className="text-lg text-center font-semibold">{props.title}</h3>
