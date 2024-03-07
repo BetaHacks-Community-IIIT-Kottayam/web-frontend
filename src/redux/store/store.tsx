@@ -11,7 +11,6 @@ import storage from "redux-persist/lib/storage";
 import { authApi } from "../features/auth/authAPI";
 import { contentApi } from "../features/system/contentAPI";
 import { PERSIST, persistReducer, persistStore } from "redux-persist";
-import searchReducer from "../features/blog/searchSlice";
 
 const persistConfig = {
   key: "auth",
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
   blog: persistReducer(persistConfigblog, blogReducer),
   user: userReducer,
   content: contentReducer,
-  search: searchReducer,
   [authApi.reducerPath]: authApi.reducer,
   [contentApi.reducerPath]: contentApi.reducer,
 });

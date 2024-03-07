@@ -4,7 +4,12 @@ import Button from "../ui/Button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { useAppDispatch, useAuth, useProfile } from "../../hooks/hooks";
+import {
+  useAppDispatch,
+  useAuth,
+  useProfile,
+  useContent,
+} from "../../hooks/hooks";
 import {
   setLastLocation,
   userLogout,
@@ -13,11 +18,7 @@ import { flushBlog } from "../../redux/features/blog/blogSlice";
 import { flushUser } from "../../redux/features/user/userSlice";
 import SideNavbar from "./SideNavbar";
 import ModalOverlay from "../ui/ModalOverlay";
-import {
-  setSearchQuery,
-  selectSearchQuery,
-} from "../../redux/features/blog/searchSlice";
-import { useSelector } from "react-redux";
+import { setSearchQuery } from "../../redux/features/system/contentSlice";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -28,7 +29,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [popup, setPop] = useState(false);
   const dispatch = useAppDispatch();
-  const searchQuery = useSelector(selectSearchQuery);
+  const { query } = useContent();
+  const searchQuery = query;
   const setLastLocationHandler = () => {
     dispatch(setLastLocation("/"));
   };

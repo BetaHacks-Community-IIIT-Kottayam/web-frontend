@@ -5,13 +5,11 @@ import { getAllBlogsService } from "../redux/features/system/contentService";
 import Overlay from "../components/ui/Overlay";
 import ResponsePopup from "../components/ui/ResponsePopup";
 import { retryFetch } from "../redux/features/system/contentSlice";
-import { useSelector } from "react-redux";
-import { selectSearchQuery } from "../redux/features/blog/searchSlice";
 
 const BlogList = () => {
-  const { blogs, isFetchedAll, status } = useContent();
+  const { blogs, isFetchedAll, status, query } = useContent();
   const dispatch = useAppDispatch();
-  const searchQuery = useSelector(selectSearchQuery);
+  const searchQuery = query;
   const retryHandler = () => {
     dispatch(retryFetch());
   };
@@ -21,13 +19,17 @@ const BlogList = () => {
     }
   }, [isFetchedAll, status.isError]);
 
-  const blogsStartWithSearchQuery = blogs?.filter((blog: { name: string }) =>
-    blog.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+  //Filtering logic to render the blogs acc to search query.
+  const blogsStartWithSearchQuery = blogs?.filter(
+    (blog) =>
+      blog.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+      blog.para.toLowerCase().startsWith(searchQuery.toLowerCase())
   );
 
   const blogsIncludingSearchQuery = blogs?.filter(
     (blog) =>
-      blog.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.para.toLowerCase().includes(searchQuery.toLowerCase())) &&
       !blogsStartWithSearchQuery?.includes(blog)
   );
 
@@ -50,7 +52,7 @@ const BlogList = () => {
         />
       )}
       {blogsToMap?.map((blog, index) => (
-        <BlogCard key={index} blog={blog} />
+        <BlogCard key={index} blog={blog} query={searchQuery} />
       ))}
     </div>
   );
