@@ -23,9 +23,11 @@ To set up this repository locally, follow these steps:
 
 4. Connecting to the backend:
 
-   ```bash
-   create a .env file in the root folder
-   paste this in the env file REACT_APP_API_URL=https://betahack-dev-server.onrender.com
+   - Create a `.env` file in the root folder.
+   - Paste the following in the `.env` file:
+
+     ```bash
+     REACT_APP_API_URL=https://betahack-dev-server.onrender.com
 
 5. Running locally
 
