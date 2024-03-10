@@ -18,6 +18,8 @@ export const userLogin = createAsyncThunk<
 >('userLogin', async (loginCredentials: ILoginFormState, thunkAPI) => {
     try {
         const baseUrl=process.env.REACT_APP_API_URL;
+        // console.log(baseUrl);
+        // console.log(process.env.NODE_ENV);
         const response = await axios.post(
             `${baseUrl}/user/signin`,
             loginCredentials

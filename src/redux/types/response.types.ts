@@ -42,8 +42,6 @@ export interface IGetUserProfileResponse {
 }
 export interface ISendOtpResponse {
      message: string,
-     error?:any,
-     data?:any
 }
 export interface IVerifyOtpOtpResponse {
      message: string,
@@ -62,12 +60,6 @@ export interface IGetBlog {
 export interface IGetBlogResponse {
      message: string,
      blog: IGetBlog
-}
-export interface IStatsResponse {
-     message: string,
-     blogCount: number,
-     userCount: number,
-     upvoteCount: number,
 }
 
 export interface IErrorResponse {
