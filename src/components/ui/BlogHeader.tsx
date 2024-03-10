@@ -3,6 +3,11 @@ import { FaLinkedin, FaUser } from "react-icons/fa";
 import { BiSolidUpvote } from "react-icons/bi";
 import { useAppDispatch, useAuth } from '../../hooks/hooks';
 import { upvoteBlogService } from '../../redux/features/system/contentService';
+import { verifyTokenService } from '../../redux/features/auth/authService';
+import { flushUser } from '../../redux/features/user/userSlice';
+import { flushBlog } from '../../redux/features/blog/blogSlice';
+import { userLogout } from '../../redux/features/auth/authSlice';
+import { Link } from 'react-router-dom';
 
 const BlogHeader = (props: UHeaderProps) => {
     const dispatch=useAppDispatch();
