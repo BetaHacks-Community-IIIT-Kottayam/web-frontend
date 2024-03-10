@@ -3,24 +3,30 @@ import { useAppDispatch, useAuth } from "../../hooks/hooks";
 import { useEffect } from "react";
 import { flushBlog } from "../../redux/features/blog/blogSlice";
 import { flushUser } from "../../redux/features/user/userSlice";
-import { userLogout } from "../../redux/features/auth/authSlice";
+import { setAuthenticated, userLogout } from "../../redux/features/auth/authSlice";
 import { verifyTokenService } from "../../redux/features/auth/authService";
+import { useVerifyOtpServiceMutation, useVerifyTokenServiceQuery } from "../../redux/features/auth/authAPI";
+import Overlay from "../ui/Overlay";
 
 
 const ProtectedRoutes = () => {
     const { isAuth,status} = useAuth();
     const dispatch=useAppDispatch();
+    const {data,isLoading,isError}=useVerifyTokenServiceQuery();
     useEffect(() => {
-        dispatch(verifyTokenService());
-        if (status.errorMessage?.message === "Unauthorized") {
+        if(data){
+           const {token}=data;
+           dispatch(setAuthenticated(token));
+        }
+        if(isError){
+            dispatch(userLogout());
             dispatch(flushBlog());
             dispatch(flushUser());
-            dispatch(userLogout());
         }
-    },[isAuth,status.isError]);
+    },[data,isLoading,isError,isAuth]);
     
-    return isAuth ? <Outlet /> : <Navigate to='/auth/v1/login' />
+    return isLoading ? <Overlay message="Processing request please wait...." /> 
+                     : isAuth ? <Outlet /> : <Navigate to='/auth/v1/login' />;
 };
-
 
 export default ProtectedRoutes;

@@ -9,14 +9,32 @@ import { validateEmailInput, validateMobileInput, validateNameInput } from '../u
 import { useAppDispatch, useAuth } from '../hooks/hooks';
 import { sendOtpService, userRegister, verifyOtpService } from '../redux/features/auth/authService';
 import Overlay from '../components/ui/Overlay';
-import { userLoginRetry } from '../redux/features/auth/authSlice';
+import { setAuthenticated, setIsotpSent, userLoginRetry } from '../redux/features/auth/authSlice';
 import ModalOverlay from '../components/ui/ModalOverlay';
 import sideimg from '../images/register.jpeg';
+import { MdEdit } from 'react-icons/md';
+import { useSendOtpServiceMutation, useUserRegisterMutation, useVerifyOtpServiceMutation } from '../redux/features/auth/authAPI';
+import { toast } from 'react-toastify';
+import { MdCancel } from "react-icons/md";
+
 
 const RegisterPage = () => {
+  window.addEventListener('beforeunload', function (e) {
+    // Cancel the event
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+
+    // Prompt the user with a custom message
+    var confirmationMessage = 'Your changes may not be saved. Are you sure you want to leave?';
+
+    // Return the confirmation message
+    return confirmationMessage;
+  });
   const { isAuth, status, lastLocation } = useAuth();
   const [name, setName] = useState('');
   const [otp, setOtp] = useState('');
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const otpRef = useRef(null);
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -24,6 +42,10 @@ const RegisterPage = () => {
   const [cnfPassword, setCnfPassword] = useState('');
   const [err, setErr] = useState('');
   const [verifyEmail, setVerifyEmail] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [sendOtpMutation, { isLoading: sendOtpLoading, isError: sendOtpError }] = useSendOtpServiceMutation();
+  const [userRegisterMutation, { isLoading: registerUserLoading, isError: registerUserError }] = useUserRegisterMutation();
+  const [verifyOtpMutation, { isLoading: verifyOtpLoading, isError: verifyOtpError }] = useVerifyOtpServiceMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -51,21 +73,96 @@ const RegisterPage = () => {
     setCnfPassword(event.target.value);
     setErr('');
   }
-  const onRequestOtp = () => {
+  const onRequestOtp = async () => {
     if (!validateEmailInput(email)) {
-      setErr('* Please enter valid email');
+      toast.error('Please enter a valid email address',
+        {
+          position: "top-center",
+          autoClose: 2000,
+        });
       return;
     }
-    dispatch(sendOtpService(email));
+    const result = await sendOtpMutation({ email, type: "REGISTER" });
+    if ('data' in result) {
+      setIsOtpSent(true);
+      toast.success('OTP sent successfully',
+        {
+          position: "top-center",
+          autoClose: 2000,
+        });
+    }
+    if ('error' in result) {
+      if ('status' in result.error) {
+        if (result.error.status === 400) {
+          toast.error('Email already exists, please login',
+            {
+              position: "top-center",
+              autoClose: 2000,
+            });
+        }
+      }
+    }
   }
-  const onVerifyOtp = () => {
+  const onVerifyOtp = async () => {
     if (otp.length !== 6) {
-      setErr('* Please enter 6 digit otp');
+      toast.error('Please enter a valid 6 digit otp',
+        {
+          position: "top-center",
+          autoClose: 2000,
+        });
       return;
     }
-    dispatch(verifyOtpService({ email, otp }));
+    const result = await verifyOtpMutation({ email, otp });
+    if ('data' in result) {
+      setIsEmailVerified(true);
+      setVerifyEmail(false);
+      toast.success('OTP verified successfully',
+        {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      const newUserCredentials = {
+        name,
+        email,
+        mobile,
+        password,
+        cnfPassword,
+      }
+      const result = await userRegisterMutation(newUserCredentials);
+      if ('data' in result) {
+        dispatch(setAuthenticated(result.data.token));
+        navigate(lastLocation);
+        toast.success('Registered successfully',
+          {
+            position: "top-center",
+            autoClose: 2000,
+          });
+      }
+      if ('error' in result) {
+        if ('status' in result.error) {
+          if (result.error.status === 400) {
+            toast.error('User Already exists, please login...',
+              {
+                position: "top-center",
+                autoClose: 2000,
+              });
+          }
+        }
+      }
+    }
+    if ('error' in result) {
+      if ('status' in result.error) {
+        if (result.error.status === 400) {
+          toast.error('Incorrect OTP',
+            {
+              position: "top-center",
+              autoClose: 2000,
+            });
+        }
+      }
+    }
   }
-  const onFormSubmit = () => {
+  const onFormSubmit = async () => {
     if (!validateNameInput(name)) {
       setErr('* Please enter valid name');
       return;
@@ -86,8 +183,9 @@ const RegisterPage = () => {
       setErr('* Password is not matching');
       return;
     }
-    if (!status.isEmailVerified) {
+    if (!isEmailVerified) {
       setVerifyEmail(true);
+      setIsotpSent(false);
       return;
     }
     const newUserCredentials = {
@@ -97,32 +195,38 @@ const RegisterPage = () => {
       password,
       cnfPassword,
     }
-    dispatch(userRegister(newUserCredentials));
-  }
-  const registerErrorHandler = () => {
-    dispatch(userLoginRetry());
-  }
-  useEffect(() => {
-    setTimeout(() => {
-      if (isAuth) {
-        navigate(lastLocation);
+    const result = await userRegisterMutation(newUserCredentials);
+    if ('data' in result) {
+      dispatch(setAuthenticated(result.data.token));
+      navigate(lastLocation);
+      toast.success('Registered successfully',
+        {
+          position: "top-center",
+          autoClose: 2000,
+        });
+    }
+    if ('error' in result) {
+      if ('status' in result.error) {
+        if (result.error.status === 400) {
+          toast.error('User Already exists, please login...',
+            {
+              position: "top-center",
+              autoClose: 2000,
+            });
+        }
       }
-      if (status.isEmailVerified) {
-        setVerifyEmail(false);
-        onFormSubmit();
-      }
-    }, 1000);
-  }, [isAuth, status.isError, status.isEmailVerified])
+    }
+  }
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-      {status.isLoading && <Overlay message='Registering, please wait....' />}
+      {registerUserLoading && <Overlay message='Registering, please wait....' />}
       {isAuth && <ResponsePopup type='success' />}
-      {status.isEmailVerified && verifyEmail && <ResponsePopup type='success' />}
-      {status.isError && <ResponsePopup type='error' text={status.errorMessage} onClose={registerErrorHandler} />}
-      {verifyEmail && !status.isEmailVerified && <ModalOverlay>
-        <div className='bg-white flex flex-col px-16 py-8 text-center justfiy-center rounded-md'>
+      {/* {isEmailVerified && verifyEmail && <ResponsePopup type='success' />} */}
+      {verifyEmail && !isEmailVerified && <ModalOverlay>
+        <div className='relative bg-white flex flex-col px-16 py-8 text-center justfiy-center rounded-md'>
+          <MdCancel size='1.5rem' onClick={() => setVerifyEmail(false)} color='black' style={{ position: 'absolute', cursor: 'pointer', top: '3%', right: '3%' }} />
           <p className='font-semibold mb-4'>Verify Your Email</p>
-          {!status.isOtpSent ? <input
+          {!isOtpSent ? <input
             placeholder='Email'
             type='text'
             value={email}
@@ -130,20 +234,21 @@ const RegisterPage = () => {
             className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
 
           /> :
-            <input
-              placeholder='Enter OTP'
-              type='text'
-              value={otp}
-              onChange={onOtpChangeHandler}
-              className="block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
-
-            />
-          }
-          {(err || status.errorMessage) && <p className='text-red-600 text-sm text-center'>{err || status.errorMessage}</p>}
-
-          {!status.isOtpSent ?
             <div>
-              {!status.isLoading ?
+              <p className='mb-2 text-[0.8rem] text-gray-700'>OTP sent to <span className='text-blue-500'>{email} <MdEdit onClick={() => { setIsOtpSent(false) }} className='inline cursor-pointer color-blue-500' size='0.8rem' /></span></p>
+              <input
+                placeholder='Enter OTP'
+                type='text'
+                value={otp}
+                onChange={onOtpChangeHandler}
+                className="w-full block p-4 flex-1 outline-0 border-0 bg-gray-200 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
+
+              />
+            </div>
+          }
+          {!isOtpSent ?
+            <div>
+              {!sendOtpLoading ?
                 <div onClick={onRequestOtp}>
                   <LargeButton type='submit' name='Request OTP' />
                 </div>
@@ -167,7 +272,7 @@ const RegisterPage = () => {
             </div>
             :
             <div>
-              {!status.isLoading ?
+              {!verifyOtpLoading ?
                 <div onClick={onVerifyOtp}>
                   <LargeButton type='submit' name='Verify OTP' />
                 </div>
