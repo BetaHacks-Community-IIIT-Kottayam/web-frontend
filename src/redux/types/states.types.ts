@@ -27,6 +27,7 @@ export interface IBlogSliceState {
 export interface IContentSliceState {
     blogs: IBlogCard[]|undefined,
     recentBlogs: IBlogCard[]|undefined,
+    query: string,
     currentBlog:IGetBlog|undefined,
     status:Status,
     isFetched:boolean,

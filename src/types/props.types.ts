@@ -65,7 +65,8 @@ export interface BProjectProps{
 }
 export interface BCardProps{
     key:number,
-    blog:IBlogCard
+    blog:IBlogCard,
+    query: string
 }
 
 export interface BCountupProps{
